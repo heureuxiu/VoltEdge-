@@ -75,8 +75,8 @@ export default function AdminDashboardPage() {
         />
         <StatCard
           icon={ShoppingCart}
-          tintClassName="bg-lime-soft"
-          iconClassName="text-lime-dark"
+          tintClassName="bg-accent-soft"
+          iconClassName="text-brand"
           value={String(dashboardStats.ordersToday)}
           label="Orders today"
           trend="+4 vs yesterday"
@@ -104,7 +104,7 @@ export default function AdminDashboardPage() {
 
       {/* Recent orders + side column */}
       <div className="flex flex-wrap items-start gap-4">
-        <div className="min-w-0 flex-[999_1_480px] rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+        <div className="min-w-0 flex-[999_1_480px] rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
           <div className="flex items-center justify-between gap-3">
             <b className="font-display text-lg font-bold">Recent orders</b>
             <Link href="/orders" className="text-[13px] font-semibold text-brand">
@@ -128,13 +128,13 @@ export default function AdminDashboardPage() {
               <tbody>
                 {recentOrders.map((o) => (
                   <tr key={o.id}>
-                    <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm font-semibold">{o.id}</td>
-                    <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm">{o.customer}</td>
-                    <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm text-muted">{o.item}</td>
-                    <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm font-semibold">
+                    <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm font-semibold">{o.id}</td>
+                    <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm">{o.customer}</td>
+                    <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm text-muted">{o.item}</td>
+                    <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm font-semibold">
                       {formatZar(o.total)}
                     </td>
-                    <td className="border-b border-[#F0F1F3] px-2.5 py-[11px]">
+                    <td className="border-b border-[#ececee] px-2.5 py-[11px]">
                       <StatusPill className={orderStatusStyles[o.status]}>{o.status}</StatusPill>
                     </td>
                   </tr>
@@ -145,11 +145,11 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-4">
-          <div className="rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+          <div className="rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
             <b className="font-display text-base font-bold">Today&apos;s repair queue</b>
             <div className="mt-3 flex flex-col">
               {repairQueue.map((r) => (
-                <div key={r.id} className="flex items-center gap-2.5 border-t border-[#F0F1F3] py-2">
+                <div key={r.id} className="flex items-center gap-2.5 border-t border-[#ececee] py-2">
                   <span className="grid size-[34px] shrink-0 place-items-center rounded-[10px] bg-repair-soft">
                     <Wrench className="size-4 text-repair" strokeWidth={2} aria-hidden />
                   </span>
@@ -168,15 +168,15 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
 
-          <div className="flex flex-col gap-2.5 rounded-card border border-lime-dark/20 bg-lime-soft p-5">
-            <span className="flex items-center gap-2 text-[13px] font-bold text-lime-dark">
+          <div className="flex flex-col gap-2.5 rounded-card border border-accent-dark/20 bg-accent-soft p-5">
+            <span className="flex items-center gap-2 text-[13px] font-bold text-brand">
               <AlertTriangle className="size-4" strokeWidth={2.2} aria-hidden />
               Low stock
             </span>
             {lowStockProducts.map((p) => (
               <span key={p.id} className="flex items-center justify-between text-[13px] font-semibold">
                 {p.name}
-                <b className="text-lime-dark">{p.stock} left</b>
+                <b className="text-brand">{p.stock} left</b>
               </span>
             ))}
           </div>
@@ -184,7 +184,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Sales chart */}
-      <div className="flex flex-col gap-4 rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+      <div className="flex flex-col gap-4 rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <b className="font-display text-base font-bold">Sales this week</b>
           <span className="text-[13px] text-muted">
@@ -195,7 +195,7 @@ export default function AdminDashboardPage() {
           {salesThisWeek.map((d) => (
             <div key={d.day} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
               <div
-                className={`w-full max-w-10 rounded-t-lg rounded-b-[3px] ${d.day === "Sat" ? "bg-lime" : "bg-brand-soft"}`}
+                className={`w-full max-w-10 rounded-t-lg rounded-b-[3px] ${d.day === "Sat" ? "bg-accent" : "bg-brand-soft"}`}
                 style={{ height: `${(d.amount / maxSales) * 100}%` }}
               />
               <span className="text-xs font-semibold text-muted">{d.day}</span>

@@ -15,7 +15,7 @@ interface StatCardProps {
 
 export function StatCard({ icon: Icon, iconClassName, tintClassName, value, label, trend, trendUp }: StatCardProps) {
   return (
-    <div className="flex min-w-0 flex-col gap-4 rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+    <div className="flex min-w-0 flex-col gap-4 rounded-card border border-line bg-white p-[22px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
       <div className="flex items-center justify-between gap-2.5">
         <span className={cn("grid size-11 shrink-0 place-items-center rounded-[14px]", tintClassName)}>
           <Icon className={cn("size-[19px]", iconClassName)} strokeWidth={2} aria-hidden />

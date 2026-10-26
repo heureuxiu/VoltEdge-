@@ -5,23 +5,26 @@
 /*  admin panel stays visually consistent with the client app.         */
 /* ------------------------------------------------------------------ */
 @theme {
-  --color-ink: #0b0c10;
-  --color-ink-800: #15171e;
-  --color-ink-700: #1a1c23;
-  --color-surface: #f4f5f7;
-  --color-line: #e3e5ea;
-  --color-muted: #5a5f6b;
-  --color-muted-dark: #b7bbc6;
-  --color-lime: #d4ff3a;
-  --color-lime-soft: #f4ffd0;
-  --color-lime-dark: #5c7a00;
-  --color-brand: #2b4bff;
-  --color-brand-soft: #e7ebff;
-  --color-repair: #c2410c;
-  --color-repair-soft: #fff1e8;
+  --color-ink: #111111;
+  --color-ink-800: #1b1b1b;
+  --color-ink-700: #2b2b2b;
+  --color-surface: #f4f4f5;
+  --color-line: #e4e4e7;
+  --color-muted: #6b6b73;
+  --color-muted-dark: #a1a1aa;
+  --color-accent: #ffc933;
+  --color-accent-soft: #fef4cc;
+  --color-accent-dark: #8a6100;
+  --color-brand: #111111;
+  --color-hero: #2347ff;
+  --color-hero-soft: #e8eeff;
+  --color-brand-soft: #f1f1f3;
+  --color-repair: #e5484d;
+  --color-repair-soft: #ffe9ea;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  --font-logo: var(--font-archivo), var(--font-inter), sans-serif;
 
   --radius-card: 1.5rem;
   --radius-panel: 2rem;
@@ -32,13 +35,14 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-surface text-ink font-sans antialiased;
+    @apply bg-white text-ink font-sans antialiased;
   }
+  .font-logo { font-stretch: 125%; }
   h1, h2, h3 {
     @apply font-display tracking-tight;
   }
   ::selection {
-    @apply bg-lime text-ink;
+    @apply bg-ink text-white;
   }
 }
 

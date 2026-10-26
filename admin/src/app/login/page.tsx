@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Zap } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
+import { LogoMark } from "@/components/admin/LogoMark";
 import { adminSite } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -17,18 +18,16 @@ export default function AdminLoginPage() {
       />
       <div
         aria-hidden
-        className="absolute -bottom-52 -left-36 size-[480px] rounded-full bg-lime opacity-[0.16] blur-[100px]"
+        className="absolute -bottom-52 -left-36 size-[480px] rounded-full bg-accent opacity-[0.16] blur-[100px]"
       />
 
       <div className="relative flex w-full max-w-[420px] flex-col items-center gap-7 text-center">
-        <a href={adminSite.storeUrl} aria-label={`${adminSite.name} home`} className="flex items-center gap-2.5 text-ink">
-          <span className="grid size-[38px] place-items-center rounded-[11px] bg-ink">
-            <Zap className="size-[19px] text-lime" strokeWidth={2.4} aria-hidden />
-          </span>
-          <span className="font-display text-[22px] font-bold tracking-tight">{adminSite.name}</span>
+        <a href={adminSite.storeUrl} aria-label={`${adminSite.name} home`} className="flex items-center gap-3 text-ink">
+          <LogoMark className="h-[30px]" />
+          <span className="font-logo text-[24px] font-extrabold uppercase leading-none tracking-[0.01em]">{adminSite.name}</span>
         </a>
 
-        <form className="flex w-full flex-col gap-[18px] rounded-panel border border-line bg-white p-9 text-left shadow-[0_8px_24px_rgba(11,12,16,0.06)]">
+        <form className="flex w-full flex-col gap-[18px] rounded-panel border border-line bg-white p-9 text-left shadow-[0_8px_24px_rgba(17,17,17,0.06)]">
           <div>
             <b className="block font-display text-[22px] font-bold">Admin sign in</b>
             <span className="text-sm text-muted">Staff access only — use your store email.</span>
@@ -66,7 +65,7 @@ export default function AdminLoginPage() {
 
           <Link
             href="/dashboard"
-            className="flex h-[52px] items-center justify-center rounded-2xl bg-ink text-[15px] font-bold text-white transition-colors hover:bg-ink-700"
+            className="flex h-[52px] items-center justify-center rounded-2xl bg-brand text-[15px] font-bold text-white transition-colors hover:bg-[#333333]"
           >
             Sign in
           </Link>

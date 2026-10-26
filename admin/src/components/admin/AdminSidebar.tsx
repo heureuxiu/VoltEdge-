@@ -10,10 +10,10 @@ import {
   SlidersHorizontal,
   Users,
   Wrench,
-  Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import { LogoMark } from "@/components/admin/LogoMark";
 import { adminSite } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -41,13 +41,11 @@ export function AdminSidebar() {
       <a
         href={adminSite.storeUrl}
         aria-label={`${adminSite.name} home`}
-        className="flex items-center gap-2.5 border-b border-line px-[22px] py-5 text-ink"
+        className="flex items-center gap-3 border-b border-line px-[22px] py-5 text-ink"
       >
-        <span className="grid size-[34px] shrink-0 place-items-center rounded-[10px] bg-ink">
-          <Zap className="size-[17px] text-lime" strokeWidth={2.4} aria-hidden />
-        </span>
+        <LogoMark />
         <span className="flex min-w-0 flex-col leading-tight">
-          <span className="font-display text-[17px] font-bold tracking-tight">{adminSite.name}</span>
+          <span className="font-logo text-[16px] font-extrabold uppercase leading-none tracking-[0.01em]">{adminSite.name}</span>
           <span className="text-[11px] font-semibold tracking-[0.08em] text-[#9aa0ad] uppercase">Admin</span>
         </span>
       </a>
@@ -66,7 +64,7 @@ export function AdminSidebar() {
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-[10px] px-3 py-[11px] text-sm font-semibold",
-                isActive ? "bg-[#EEF1FF] text-brand" : "text-muted hover:bg-surface",
+                isActive ? "bg-[#f1f1f3] text-brand" : "text-muted hover:bg-surface",
               )}
             >
               <span className="flex size-5 shrink-0 items-center justify-center" aria-hidden>

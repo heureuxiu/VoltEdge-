@@ -12,12 +12,12 @@ import type {
 
 export const adminProducts: AdminProductRow[] = [
   { id: "iphone-17-pro-max", name: "iPhone 17 Pro Max", spec: "256GB · New", category: "iPhone", price: 34999, stock: 14, tint: "bg-brand-soft" },
-  { id: "iphone-17", name: "iPhone 17", spec: "128GB · New", category: "iPhone", price: 24999, stock: 21, tint: "bg-[#f1f3f6]" },
+  { id: "iphone-17", name: "iPhone 17", spec: "128GB · New", category: "iPhone", price: 24999, stock: 21, tint: "bg-[#f4f4f5]" },
   { id: "iphone-15-pro", name: "iPhone 15 Pro", spec: "128GB · Pre-owned", category: "iPhone", price: 18499, stock: 2, tint: "bg-repair-soft" },
-  { id: "galaxy-s25-ultra", name: "Galaxy S25 Ultra", spec: "256GB · New", category: "Samsung", price: 29999, stock: 9, tint: "bg-[#e9f7ef]" },
-  { id: "galaxy-s25", name: "Galaxy S25", spec: "128GB · New", category: "Samsung", price: 19999, stock: 17, tint: "bg-[#f1f3f6]" },
-  { id: "galaxy-a36", name: "Galaxy A36", spec: "128GB · New", category: "Samsung", price: 8499, stock: 31, tint: "bg-lime-soft" },
-  { id: "airpods-pro-3", name: "AirPods Pro 3", spec: "USB-C · ANC", category: "Gadgets", price: 5499, stock: 5, tint: "bg-[#efe9ff]" },
+  { id: "galaxy-s25-ultra", name: "Galaxy S25 Ultra", spec: "256GB · New", category: "Samsung", price: 29999, stock: 9, tint: "bg-[#f4f4f5]" },
+  { id: "galaxy-s25", name: "Galaxy S25", spec: "128GB · New", category: "Samsung", price: 19999, stock: 17, tint: "bg-[#f4f4f5]" },
+  { id: "galaxy-a36", name: "Galaxy A36", spec: "128GB · New", category: "Samsung", price: 8499, stock: 31, tint: "bg-accent-soft" },
+  { id: "airpods-pro-3", name: "AirPods Pro 3", spec: "USB-C · ANC", category: "Gadgets", price: 5499, stock: 5, tint: "bg-[#f1f1f3]" },
   { id: "macbook-air", name: 'MacBook Air 13"', spec: "M4 · 256GB", category: "Gadgets", price: 24999, stock: 0, tint: "bg-brand-soft" },
 ];
 
@@ -109,7 +109,7 @@ export const tradeInStatusStyles: Record<AdminTradeIn["status"], string> = {
 };
 
 export const tradeInGradeStats: { grade: "A" | "B" | "C"; count: number; label: string; tint: string; color: string }[] = [
-  { grade: "A", count: 9, label: "Grade A — like new", tint: "bg-lime-soft", color: "text-lime-dark" },
+  { grade: "A", count: 9, label: "Grade A — like new", tint: "bg-accent-soft", color: "text-brand" },
   { grade: "B", count: 5, label: "Grade B — light marks", tint: "bg-brand-soft", color: "text-brand" },
   { grade: "C", count: 2, label: "Grade C — heavy wear", tint: "bg-[#FEF3C7]", color: "text-[#B45309]" },
 ];

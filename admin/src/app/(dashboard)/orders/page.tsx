@@ -38,14 +38,14 @@ export default function AdminOrdersPage() {
         </div>
         <button
           type="button"
-          className="flex h-[46px] items-center gap-2 rounded-xl bg-ink px-[18px] text-sm font-semibold text-white"
+          className="flex h-[46px] items-center gap-2 rounded-xl bg-brand px-[18px] text-sm font-semibold text-white"
         >
           <Plus className="size-4" strokeWidth={2} aria-hidden />
           New order
         </button>
       </div>
 
-      <div className="flex flex-col gap-4 rounded-card border border-line bg-white p-[18px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+      <div className="flex flex-col gap-4 rounded-card border border-line bg-white p-[18px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
         <div className="flex flex-wrap items-center justify-between gap-2.5">
           <div role="tablist" aria-label="Order status" className="flex flex-wrap gap-1.5 rounded-xl bg-surface p-[5px]">
             {adminOrderStatuses.map((status) => {
@@ -58,7 +58,7 @@ export default function AdminOrdersPage() {
                   onClick={() => setFilter(status)}
                   className={cn(
                     "rounded-[9px] px-3.5 py-2.5 text-[13px] font-semibold",
-                    on ? "bg-white text-ink shadow-[0_1px_2px_rgba(11,12,16,0.12)]" : "text-muted",
+                    on ? "bg-white text-ink shadow-[0_1px_2px_rgba(17,17,17,0.12)]" : "text-muted",
                   )}
                 >
                   {status}
@@ -101,18 +101,18 @@ export default function AdminOrdersPage() {
             <tbody>
               {visible.map((o) => (
                 <tr key={o.id}>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3">
+                  <td className="border-b border-[#ececee] px-2.5 py-3">
                     <input type="checkbox" aria-label={`Select ${o.id}`} />
                   </td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3 text-sm font-bold">{o.id}</td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3 text-sm">{o.customer}</td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3 text-sm text-muted">{o.item}</td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3 text-[13px] text-muted">{o.date}</td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3 text-sm font-semibold">{formatZar(o.total)}</td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3">
+                  <td className="border-b border-[#ececee] px-2.5 py-3 text-sm font-bold">{o.id}</td>
+                  <td className="border-b border-[#ececee] px-2.5 py-3 text-sm">{o.customer}</td>
+                  <td className="border-b border-[#ececee] px-2.5 py-3 text-sm text-muted">{o.item}</td>
+                  <td className="border-b border-[#ececee] px-2.5 py-3 text-[13px] text-muted">{o.date}</td>
+                  <td className="border-b border-[#ececee] px-2.5 py-3 text-sm font-semibold">{formatZar(o.total)}</td>
+                  <td className="border-b border-[#ececee] px-2.5 py-3">
                     <StatusPill className={orderStatusStyles[o.status]}>{o.status}</StatusPill>
                   </td>
-                  <td className="border-b border-[#F0F1F3] px-2.5 py-3 text-right">
+                  <td className="border-b border-[#ececee] px-2.5 py-3 text-right">
                     <a href="#" aria-label={`View ${o.id}`} className="text-[13px] font-semibold text-brand">
                       View →
                     </a>
@@ -142,7 +142,7 @@ export default function AdminOrdersPage() {
             >
               <ChevronLeft className="size-[15px]" strokeWidth={2.2} aria-hidden />
             </button>
-            <button type="button" aria-current="page" className="size-9 rounded-[10px] bg-ink text-[13px] font-bold text-white">
+            <button type="button" aria-current="page" className="size-9 rounded-[10px] bg-brand text-[13px] font-bold text-white">
               1
             </button>
             <button type="button" className="size-9 rounded-[10px] border border-line bg-white text-[13px] font-semibold">

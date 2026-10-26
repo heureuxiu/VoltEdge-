@@ -37,7 +37,7 @@ export default function AdminRepairsPage() {
           onClick={() => setView("repairs")}
           className={cn(
             "rounded-[9px] px-4 py-2.5 text-[13px] font-semibold",
-            view === "repairs" ? "bg-ink text-white" : "text-muted",
+            view === "repairs" ? "bg-brand text-white" : "text-muted",
           )}
         >
           Repair bookings
@@ -48,7 +48,7 @@ export default function AdminRepairsPage() {
           onClick={() => setView("tradein")}
           className={cn(
             "rounded-[9px] px-4 py-2.5 text-[13px] font-semibold",
-            view === "tradein" ? "bg-ink text-white" : "text-muted",
+            view === "tradein" ? "bg-brand text-white" : "text-muted",
           )}
         >
           Trade-in requests
@@ -61,7 +61,7 @@ export default function AdminRepairsPage() {
             {repairQueueStats.map((s) => (
               <div
                 key={s.label}
-                className="flex flex-col gap-1 rounded-2xl border border-line bg-white p-4 shadow-[0_1px_2px_rgba(11,12,16,0.04)]"
+                className="flex flex-col gap-1 rounded-2xl border border-line bg-white p-4 shadow-[0_1px_2px_rgba(17,17,17,0.04)]"
               >
                 <b className="font-display text-[22px] font-bold">{s.value}</b>
                 <span className="text-[13px] text-muted">{s.label}</span>
@@ -69,7 +69,7 @@ export default function AdminRepairsPage() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-3.5 rounded-card border border-line bg-white p-[18px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+          <div className="flex flex-col gap-3.5 rounded-card border border-line bg-white p-[18px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse">
                 <thead>
@@ -87,17 +87,17 @@ export default function AdminRepairsPage() {
                 <tbody>
                   {adminRepairs.map((r) => (
                     <tr key={r.id}>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm font-bold">{r.id}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm">{r.customer}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm">
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm font-bold">{r.id}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm">{r.customer}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm">
                         <b className="block text-[13px] font-semibold">{r.device}</b>
                         <span className="text-xs text-muted">{r.issue}</span>
                       </td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-[13px] text-muted">{r.when}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm font-semibold">
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-[13px] text-muted">{r.when}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm font-semibold">
                         {formatZar(r.quote)}
                       </td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px]">
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px]">
                         <StatusPill className={repairStatusStyles[r.status]}>{r.status}</StatusPill>
                       </td>
                     </tr>
@@ -113,7 +113,7 @@ export default function AdminRepairsPage() {
             {tradeInGradeStats.map((g) => (
               <div
                 key={g.grade}
-                className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4 shadow-[0_1px_2px_rgba(11,12,16,0.04)]"
+                className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4 shadow-[0_1px_2px_rgba(17,17,17,0.04)]"
               >
                 <span
                   className={cn(
@@ -132,7 +132,7 @@ export default function AdminRepairsPage() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-3.5 rounded-card border border-line bg-white p-[18px] shadow-[0_1px_2px_rgba(11,12,16,0.04)]">
+          <div className="flex flex-col gap-3.5 rounded-card border border-line bg-white p-[18px] shadow-[0_1px_2px_rgba(17,17,17,0.04)]">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse">
                 <thead>
@@ -150,14 +150,14 @@ export default function AdminRepairsPage() {
                 <tbody>
                   {adminTradeIns.map((t) => (
                     <tr key={t.id}>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm font-bold">{t.id}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm">{t.customer}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm">{t.device}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-[13px] font-bold">{t.grade}</td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px] text-sm font-semibold">
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm font-bold">{t.id}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm">{t.customer}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm">{t.device}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-[13px] font-bold">{t.grade}</td>
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px] text-sm font-semibold">
                         {formatZar(t.creditMin)}–{formatZar(t.creditMax)}
                       </td>
-                      <td className="border-b border-[#F0F1F3] px-2.5 py-[11px]">
+                      <td className="border-b border-[#ececee] px-2.5 py-[11px]">
                         <StatusPill className={tradeInStatusStyles[t.status]}>{t.status}</StatusPill>
                       </td>
                     </tr>
