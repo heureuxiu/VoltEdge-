@@ -30,16 +30,16 @@ export function Accordion({ items, defaultOpen = 0, className }: AccordionProps)
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? -1 : index)}
-                className="flex min-h-16 w-full items-center justify-between gap-4 text-left text-[17px] font-semibold"
+                className="group/q flex min-h-16 w-full items-center justify-between gap-4 text-left text-[17px] font-semibold"
               >
                 {item.question}
                 <span
                   className={cn(
-                    "grid size-8 shrink-0 place-items-center rounded-full transition-all duration-300",
-                    isOpen ? "rotate-45 bg-lime" : "bg-surface",
+                    "grid size-8 shrink-0 place-items-center rounded-full border-2 border-ink text-ink transition-all duration-300 group-hover/q:bg-ink group-hover/q:text-white",
+                    isOpen && "rotate-45 bg-ink text-white",
                   )}
                 >
-                  <Plus className="size-4" aria-hidden />
+                  <Plus className="size-4" strokeWidth={2.4} aria-hidden />
                 </span>
               </button>
             </h3>

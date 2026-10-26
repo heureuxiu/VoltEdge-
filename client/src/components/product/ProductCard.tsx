@@ -18,7 +18,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   const [liked, setLiked] = useState(false);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(11_12_16/0.35)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]">
       <div className={cn("relative flex h-60 items-center justify-center", product.tint)}>
         <span className="absolute left-3.5 top-3.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold">
           {product.badge}
@@ -38,7 +38,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           alt={product.name}
           width={240}
           height={300}
-          className="h-[200px] w-auto max-w-[80%] object-contain drop-shadow-[0_20px_24px_rgb(11_12_16/0.2)] transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)] group-hover:-translate-y-2 group-hover:-rotate-3"
+          className="h-[200px] w-auto max-w-[80%] object-contain drop-shadow-[0_20px_24px_rgb(17_17_17/0.2)] transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)] group-hover:-translate-y-2 group-hover:-rotate-3"
         />
         </Link>
       </div>
@@ -61,9 +61,9 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             type="button"
             aria-label={`Add ${product.name} to cart`}
             onClick={() => onAddToCart?.(product)}
-            className="grid size-11 place-items-center rounded-[14px] bg-ink text-white transition-transform hover:-translate-y-0.5 active:scale-95"
+            className="grid size-9 place-items-center rounded-full border-2 border-ink text-ink transition-all duration-200 hover:bg-ink hover:text-white active:scale-95"
           >
-            <Plus className="size-[18px]" strokeWidth={2.2} aria-hidden />
+            <Plus className="size-4" strokeWidth={2.4} aria-hidden />
           </button>
         </div>
       </div>
