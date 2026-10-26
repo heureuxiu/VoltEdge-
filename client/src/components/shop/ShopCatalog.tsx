@@ -1,51 +1,73 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { BadgeCheck, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { ProductCard } from "@/components/product/ProductCard";
 import { ChoiceButton } from "@/components/ui/ChoiceButton";
 import { inputClassName } from "@/components/ui/Field";
 import { PageHero } from "@/components/ui/PageHero";
-import { productTypes, products } from "@/data/products";
+import { products } from "@/data/products";
 import { routes } from "@/data/site";
-import type { ProductType } from "@/types";
 
-type TypeFilter = ProductType | "all";
-type SortKey = "featured" | "name-asc" | "name-desc";
 
 const brandsInCatalog = Array.from(new Set(products.map((p) => p.brand)));
 const storageOptions = ["128GB", "256GB", "512GB", "1TB"];
 
+/** Floating product collage for the shop banner. */
+function ShopBannerArt() {
+  return (
+    <div aria-hidden className="relative mx-auto h-[250px] w-full max-w-[460px] flex-[1_1_380px] sm:h-[290px]">
+      <div className="absolute inset-x-6 bottom-2 h-12 rounded-[50%] bg-ink/25 blur-2xl" />
+      <Image
+        src="/images/products/macbook-air.webp"
+        alt=""
+        width={260}
+        height={200}
+        className="absolute bottom-6 left-0 w-[52%] -rotate-3 animate-float-soft drop-shadow-[0_24px_28px_rgb(17_17_17/0.28)] [animation-delay:-2s]"
+      />
+      <Image
+        src="/images/products/galaxy-s25-ultra.webp"
+        alt=""
+        width={160}
+        height={260}
+        className="absolute bottom-3 right-2 h-[78%] w-auto rotate-6 animate-float-soft drop-shadow-[0_24px_28px_rgb(17_17_17/0.3)] [animation-delay:-4s]"
+      />
+      <Image
+        src="/images/products/iphone-17-pro-max.webp"
+        alt=""
+        width={170}
+        height={280}
+        priority
+        className="absolute bottom-2 left-[34%] z-10 h-[92%] w-auto -rotate-6 animate-float-soft drop-shadow-[0_28px_32px_rgb(17_17_17/0.35)]"
+      />
+      <span className="absolute left-2 top-2 z-20 flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[13px] font-semibold shadow-[0_14px_28px_-14px_rgb(17_17_17/0.45)]">
+        <BadgeCheck className="size-4" aria-hidden />
+        Genuine stock only
+      </span>
+      <span className="absolute bottom-1 right-0 z-20 rounded-full bg-accent px-3.5 py-2 text-[13px] font-bold text-ink shadow-[0_14px_28px_-14px_rgb(17_17_17/0.45)]">
+        Pay in 3 · Payflex
+      </span>
+    </div>
+  );
+}
+
 export function ShopCatalog() {
-  const [type, setType] = useState<TypeFilter>("all");
   const [hiddenBrands, setHiddenBrands] = useState<string[]>([]);
   const [storage, setStorage] = useState("256GB");
-  const [query, setQuery] = useState("");
-  const [sort, setSort] = useState<SortKey>("featured");
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const list = products.filter(
-      (p) =>
-        (type === "all" || p.type === type) &&
-        !hiddenBrands.includes(p.brand) &&
-        (!q || `${p.brand} ${p.name}`.toLowerCase().includes(q)),
-    );
-    if (sort === "name-asc") return [...list].sort((a, b) => a.name.localeCompare(b.name));
-    if (sort === "name-desc") return [...list].sort((a, b) => b.name.localeCompare(a.name));
-    return list;
-  }, [type, hiddenBrands, query, sort]);
+    return products.filter((p) => !hiddenBrands.includes(p.brand));
+  }, [hiddenBrands]);
 
   const toggleBrand = (brand: string) =>
     setHiddenBrands((prev) => (prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]));
 
   const clearFilters = () => {
-    setType("all");
     setHiddenBrands([]);
-    setQuery("");
   };
 
   return (
@@ -54,49 +76,12 @@ export function ShopCatalog() {
         breadcrumbs={[{ label: "Home", href: routes.home }, { label: "Shop" }]}
         title={
           <>
-            Shop all <span className="text-lime-dark">tech.</span>
+            Shop all <span className="text-hero">tech.</span>
           </>
         }
         description="New and certified pre-owned phones, laptops and gadgets — every device checked, never blacklisted, and available with Pay in 3."
-        aside={
-          <form
-            role="search"
-            onSubmit={(e) => e.preventDefault()}
-            className="flex w-full max-w-[460px] flex-[1_1_380px] gap-2 rounded-[18px] border border-line bg-surface p-1.5"
-          >
-            <label className="flex flex-1 items-center gap-2.5 px-3">
-              <Search className="size-[18px] text-muted" aria-hidden />
-              <span className="sr-only">Search products</span>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search iPhone, Galaxy, AirPods…"
-                className="h-11 flex-1 bg-transparent text-[15px] text-ink placeholder:text-muted focus:outline-none"
-              />
-            </label>
-            <button type="submit" className="h-12 rounded-[13px] bg-lime px-5 font-bold text-ink transition-transform hover:-translate-y-0.5">
-              Search
-            </button>
-          </form>
-        }
-      >
-        <div className="flex flex-wrap gap-2">
-          {productTypes.map((option) => (
-            <ChoiceButton
-              key={option.value}
-              variant="pill"
-              selected={type === option.value}
-              onClick={() => setType(option.value)}
-            >
-              {option.label}{" "}
-              <span className="font-medium opacity-60">
-                {option.value === "all" ? products.length : products.filter((p) => p.type === option.value).length}
-              </span>
-            </ChoiceButton>
-          ))}
-        </div>
-      </PageHero>
+        aside={<ShopBannerArt />}
+      />
 
       <div className="mt-6 flex flex-wrap items-start gap-6">
         {/* Filters */}
@@ -164,7 +149,7 @@ export function ShopCatalog() {
 
           <Link
             href={routes.tradeIn}
-            className="flex flex-col gap-2.5 rounded-card bg-lime p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(11_12_16/0.35)]"
+            className="flex flex-col gap-2.5 rounded-card bg-accent p-6 text-ink transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]"
           >
             <span className="text-xs font-bold uppercase tracking-[0.06em]">Trade-in</span>
             <b className="font-display text-[22px] leading-tight">Upgrade for less with your old phone.</b>
@@ -174,23 +159,9 @@ export function ShopCatalog() {
 
         {/* Results */}
         <section aria-label="Products" className="flex min-w-0 flex-[999_1_560px] flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] bg-white py-2.5 pl-[18px] pr-2.5 ring-1 ring-line">
-            <span className="text-sm text-muted" aria-live="polite">
-              Showing <b className="text-ink">{results.length}</b> products
-            </span>
-            <label className="flex items-center gap-2 text-sm text-muted">
-              Sort by
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value as SortKey)}
-                className="h-11 rounded-xl border border-[#d5d8df] bg-surface px-3 text-sm text-ink"
-              >
-                <option value="featured">Featured</option>
-                <option value="name-asc">Name: A–Z</option>
-                <option value="name-desc">Name: Z–A</option>
-              </select>
-            </label>
-          </div>
+          <p className="px-1 text-sm text-muted" aria-live="polite">
+            Showing <b className="text-ink">{results.length}</b> products
+          </p>
 
           <motion.div layout className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
             <AnimatePresence mode="popLayout">
@@ -210,9 +181,9 @@ export function ShopCatalog() {
           </motion.div>
 
           {results.length === 0 && (
-            <div className="flex flex-col items-center gap-3 rounded-card border border-dashed border-[#d5d8df] bg-white p-12 text-center">
+            <div className="flex flex-col items-center gap-3 rounded-card border border-dashed border-[#d4d4d8] bg-white p-12 text-center">
               <b className="font-display text-xl">No products match those filters</b>
-              <button type="button" onClick={clearFilters} className="min-h-11 rounded-xl bg-ink px-5 font-semibold text-white">
+              <button type="button" onClick={clearFilters} className="min-h-11 rounded-xl bg-brand px-5 font-semibold text-white">
                 Clear filters
               </button>
             </div>
@@ -227,12 +198,12 @@ export function ShopCatalog() {
                 key={n}
                 type="button"
                 aria-current={n === 1 ? "page" : undefined}
-                className={n === 1 ? "size-11 rounded-xl bg-ink font-semibold text-white" : "size-11 rounded-xl bg-white font-semibold ring-1 ring-line"}
+                className={n === 1 ? "size-11 rounded-xl bg-brand font-semibold text-white" : "size-11 rounded-xl bg-white font-semibold ring-1 ring-line"}
               >
                 {n}
               </button>
             ))}
-            <button type="button" aria-label="Next page" className="grid size-11 place-items-center rounded-xl bg-lime">
+            <button type="button" aria-label="Next page" className="grid size-11 place-items-center rounded-xl bg-accent">
               <ChevronRight className="size-[18px]" aria-hidden />
             </button>
           </nav>
