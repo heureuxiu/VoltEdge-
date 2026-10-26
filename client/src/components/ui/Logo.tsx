@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
 
+import { LogoMark } from "@/components/ui/LogoMark";
 import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -13,16 +13,13 @@ export function Logo({ tone = "light", className }: LogoProps) {
   const onDark = tone === "dark";
 
   return (
-    <Link href="/" className={cn("flex items-center gap-2.5", className)} aria-label={`${siteConfig.name} home`}>
-      <span
-        className={cn(
-          "grid size-9 place-items-center rounded-[10px]",
-          onDark ? "bg-lime" : "bg-ink",
-        )}
-      >
-        <Zap className={cn("size-[18px]", onDark ? "text-ink" : "text-lime")} strokeWidth={2.4} aria-hidden />
-      </span>
-      <span className={cn("font-display text-[21px] font-bold tracking-tight", onDark ? "text-white" : "text-ink")}>
+    <Link
+      href="/"
+      className={cn("flex items-center gap-3", onDark ? "text-white" : "text-ink", className)}
+      aria-label={`${siteConfig.name} home`}
+    >
+      <LogoMark />
+      <span className="font-logo text-[22px] font-extrabold uppercase leading-none tracking-[0.01em]">
         {siteConfig.name}
       </span>
     </Link>
