@@ -20,14 +20,14 @@ interface PageHeroProps {
   className?: string;
 }
 
-/** Light rounded page header used at the top of every inner page. */
+/** Solid brand-colour page header used at the top of every inner page. */
 export function PageHero({
   breadcrumbs,
   title,
   description,
   aside,
   children,
-  glowClassName = "bg-brand",
+  glowClassName = "bg-hero",
   className,
 }: PageHeroProps) {
   return (
@@ -37,9 +37,9 @@ export function PageHero({
         className,
       )}
     >
-      <div aria-hidden className="absolute -right-40 -top-52 size-[600px] animate-spin-slow rounded-full border border-dashed border-brand/10" />
-      <div aria-hidden className={cn("absolute right-16 top-6 size-72 rounded-full opacity-[0.28] blur-[80px]", glowClassName)} />
-      <div aria-hidden className="absolute -bottom-24 left-10 size-64 rounded-full bg-lime opacity-[0.16] blur-[90px]" />
+      <div aria-hidden className="absolute -right-40 -top-52 size-[600px] animate-spin-slow rounded-full border border-dashed border-ink/10" />
+      <div aria-hidden className={cn("absolute right-16 top-6 size-72 rounded-full opacity-[0.12] blur-[80px]", glowClassName)} />
+      <div aria-hidden className="absolute -bottom-24 left-10 size-64 rounded-full bg-accent opacity-[0.16] blur-[90px]" />
 
       <div className="relative flex flex-wrap items-end justify-between gap-7">
         <div className="flex min-w-0 flex-[1_1_420px] flex-col gap-4">
@@ -57,7 +57,7 @@ export function PageHero({
 }
 
 export function Breadcrumbs({ items, tone = "light" }: { items: Crumb[]; tone?: "dark" | "light" }) {
-  const muted = tone === "dark" ? "text-muted-dark hover:text-white" : "text-muted hover:text-brand";
+  const muted = tone === "dark" ? "text-white/70 hover:text-white" : "text-muted hover:text-ink";
   const current = tone === "dark" ? "text-white" : "font-semibold text-ink";
 
   return (
@@ -76,7 +76,7 @@ export function Breadcrumbs({ items, tone = "light" }: { items: Crumb[]; tone?: 
                   {item.label}
                 </span>
               )}
-              {!last && <span aria-hidden className={tone === "dark" ? "text-muted-dark" : "text-muted"}>/</span>}
+              {!last && <span aria-hidden className={tone === "dark" ? "text-white/50" : "text-muted"}>/</span>}
             </li>
           );
         })}

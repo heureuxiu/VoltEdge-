@@ -27,20 +27,20 @@ export default function RepairsPage() {
         <div className="relative flex flex-[1_1_440px] flex-col gap-5">
           <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Repairs" }]} tone="light" />
           <span className="inline-flex items-center gap-2.5 self-start rounded-full border border-line bg-surface py-2 pl-2.5 pr-3.5 text-[13px] font-medium">
-            <span className="size-2 animate-pulse-dot rounded-full bg-lime" />
+            <span className="size-2 animate-pulse-dot rounded-full bg-accent" />
             Technicians in store today
           </span>
           <h1 className="animate-fade-up text-[clamp(2.625rem,5.6vw,5rem)] font-bold leading-[0.98]">
             Broken today.
             <br />
-            <span className="text-lime-dark">Fixed today.</span>
+            <span className="text-hero">Fixed today.</span>
           </h1>
           <p className="max-w-[480px] text-lg leading-relaxed text-muted">
             Phones, tablets, laptops and MacBooks repaired by certified technicians with quality parts — and a 90-day
             warranty on every job.
           </p>
           <div className="flex flex-wrap gap-3">
-            <ButtonLink href={routes.bookRepair} variant="lime" className="min-h-[54px]">
+            <ButtonLink href={routes.bookRepair} variant="accent" className="min-h-[54px]">
               Book a repair <ArrowRight className="size-[18px]" aria-hidden />
             </ButtonLink>
             <ButtonLink href="#prices" variant="outline-dark" className="min-h-[54px]">
@@ -62,7 +62,7 @@ export default function RepairsPage() {
             />
           </div>
           <FloatingNote className="right-0 top-7" icon={<Wrench className="size-[18px] text-repair" aria-hidden />} iconBg="bg-repair-soft" title="Free diagnosis" subtitle="Quote before we start" />
-          <FloatingNote className="bottom-10 left-0 [animation-delay:1.5s]" icon={<ShieldCheck className="size-[18px] text-lime" aria-hidden />} iconBg="bg-ink" title="90-day warranty" subtitle="Parts & labour" />
+          <FloatingNote className="bottom-10 left-0 [animation-delay:1.5s]" icon={<ShieldCheck className="size-[18px] text-white" aria-hidden />} iconBg="bg-brand" title="90-day warranty" subtitle="Parts & labour" />
         </div>
       </section>
 
@@ -79,7 +79,7 @@ export default function RepairsPage() {
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {repairProcess.map((step, index) => (
             <Reveal key={step.title} delay={index * 0.08}>
-              <li className="flex h-full flex-col gap-3.5 rounded-card bg-white p-7 ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(11_12_16/0.35)]">
+              <li className={`flex h-full flex-col gap-3.5 rounded-card bg-white p-7 ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]`}>
                 <span className="font-display text-[56px] font-bold leading-none text-line">0{index + 1}</span>
                 <b className="font-display text-xl">{step.title}</b>
                 <span className="text-[15px] leading-normal text-muted">{step.description}</span>
@@ -95,11 +95,11 @@ export default function RepairsPage() {
           <h2 className="mb-5 text-[clamp(1.75rem,3.4vw,2.5rem)] font-bold">Repair FAQs</h2>
           <Accordion items={repairFaqs} />
         </div>
-        <div className="relative flex min-w-0 flex-[1_1_340px] flex-col gap-3.5 overflow-hidden rounded-panel bg-lime p-9">
+        <div className="relative flex min-w-0 flex-[1_1_340px] flex-col gap-3.5 overflow-hidden rounded-panel bg-accent p-9 text-ink">
           <div aria-hidden className="absolute -bottom-28 -right-28 size-80 animate-spin-slow rounded-full border border-dashed border-ink/25" />
           <span className="relative text-[13px] font-bold uppercase tracking-[0.06em]">Walk-ins welcome</span>
           <b className="relative font-display text-[34px] leading-[1.05]">Book now, collect the same day.</b>
-          <p className="relative text-[15px] leading-relaxed text-[#2a3000]">
+          <p className="relative text-[15px] leading-relaxed text-ink/70">
             Reserve a slot online and skip the queue, or WhatsApp us a photo of the damage for a quick quote.
           </p>
           <ButtonLink href={routes.bookRepair} className="relative self-start">

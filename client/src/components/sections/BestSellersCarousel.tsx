@@ -46,19 +46,19 @@ export function BestSellersCarousel() {
       className="surface-glow-strong relative mt-4 overflow-hidden rounded-panel pb-8 pt-12 text-ink ring-1 ring-line sm:pt-[72px]"
     >
       {/* Ambient decoration */}
-      <div aria-hidden className="absolute left-1/2 top-1/2 size-[900px] -translate-x-1/2 -translate-y-[42%] animate-spin-slow rounded-full border border-dashed border-brand/10" />
-      <div aria-hidden className="absolute left-1/2 top-1/2 size-[620px] -translate-x-1/2 -translate-y-[39%] rounded-full border border-brand/8" />
-      <div aria-hidden className="absolute left-[18%] top-[20%] size-[360px] rounded-full bg-brand opacity-[0.12] blur-[100px]" />
-      <div aria-hidden className="absolute left-1/2 top-[52%] size-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime opacity-40 blur-[90px]" />
+      <div aria-hidden className="absolute left-1/2 top-1/2 size-[900px] -translate-x-1/2 -translate-y-[42%] animate-spin-slow rounded-full border border-dashed border-[#2347ff]/10" />
+      <div aria-hidden className="absolute left-1/2 top-1/2 size-[620px] -translate-x-1/2 -translate-y-[39%] rounded-full border border-[#2347ff]/8" />
+      <div aria-hidden className="absolute left-[18%] top-[20%] size-[360px] rounded-full bg-[#2347ff] opacity-[0.12] blur-[100px]" />
+      <div aria-hidden className="absolute left-1/2 top-[52%] size-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ffc933] opacity-40 blur-[90px]" />
 
       <Container className="relative flex flex-wrap items-end justify-between gap-5 lg:px-[72px]">
         <div className="flex flex-col gap-2.5">
           <span className="inline-flex items-center gap-2 self-start rounded-full border border-line bg-surface py-[7px] pl-[9px] pr-3 text-xs font-semibold uppercase tracking-[0.06em]">
-            <span className="size-[7px] animate-pulse-dot rounded-full bg-lime" />
+            <span className="size-[7px] animate-pulse-dot rounded-full bg-[#ffc933]" />
             Best sellers
           </span>
           <h2 className="text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-none">
-            This week&apos;s <span className="text-lime-dark">favourites.</span>
+            This week&apos;s <span className="text-[#2347ff]">favourites.</span>
           </h2>
         </div>
         <p className="max-w-[340px] text-base leading-relaxed text-muted">
@@ -100,7 +100,7 @@ export function BestSellersCarousel() {
           type="button"
           aria-label="Next product"
           onClick={() => go(active + 1)}
-          className="absolute right-3 top-1/2 z-40 grid size-[52px] -translate-y-1/2 place-items-center rounded-full bg-lime text-ink shadow-[0_14px_32px_-12px_rgb(212_255_58/0.6)] transition-transform hover:-translate-y-[calc(50%+2px)] sm:right-[6vw] xl:right-24"
+          className="absolute right-3 top-1/2 z-40 grid size-[52px] -translate-y-1/2 place-items-center rounded-full bg-[#ffc933] text-ink shadow-[0_14px_32px_-12px_rgb(255_201_51/0.6)] transition-transform hover:-translate-y-[calc(50%+2px)] sm:right-[6vw] xl:right-24"
         >
           <ChevronRight className="size-5" strokeWidth={2.4} aria-hidden />
         </button>
@@ -122,7 +122,7 @@ export function BestSellersCarousel() {
               <span
                 className={cn(
                   "block h-2 rounded-full transition-all duration-500",
-                  isActive ? "w-8 bg-lime" : "w-2 bg-ink/15",
+                  isActive ? "w-8 bg-[#ffc933]" : "w-2 bg-ink/15",
                 )}
               />
             </button>
@@ -163,22 +163,22 @@ function CoverflowCard({ product, offset, onSelect }: CoverflowCardProps) {
       className={cn(
         "absolute left-1/2 top-6 -ml-[140px] flex w-[280px] origin-[50%_60%] flex-col overflow-hidden rounded-[26px] border text-center backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-500",
         isActive
-          ? "border-lime bg-lime-soft shadow-[0_50px_100px_-40px_rgb(212_255_58/0.5),inset_0_1px_0_rgb(255_255_255/0.6)]"
-          : "border-line bg-white shadow-[0_30px_60px_-30px_rgb(11_12_16/0.18)]",
+          ? "border-[#ffc933] bg-[#fff4cc] shadow-[0_50px_100px_-40px_rgb(255_201_51/0.5),inset_0_1px_0_rgb(255_255_255/0.6)]"
+          : "border-line bg-white shadow-[0_30px_60px_-30px_rgb(17_17_17/0.18)]",
       )}
     >
       <span
         className={cn(
           "relative flex h-[280px] items-center justify-center transition-[background] duration-500",
           isActive
-            ? "bg-[radial-gradient(circle_at_50%_62%,rgb(212_255_58/0.35),rgb(244_255_208/0.1)_62%)]"
-            : "bg-[radial-gradient(circle_at_50%_62%,rgb(11_12_16/0.04),transparent_62%)]",
+            ? "bg-[radial-gradient(circle_at_50%_62%,rgb(255_201_51/0.35),rgb(255_244_204/0.1)_62%)]"
+            : "bg-[radial-gradient(circle_at_50%_62%,rgb(17_17_17/0.04),transparent_62%)]",
         )}
       >
         <span
           className={cn(
             "absolute left-3.5 top-3.5 z-10 rounded-full px-2.5 py-1.5 text-xs font-bold transition-colors duration-500",
-            isActive ? "bg-lime text-ink" : "bg-surface text-ink ring-1 ring-line",
+            isActive ? "bg-[#ffc933] text-ink" : "bg-surface text-ink ring-1 ring-line",
           )}
         >
           {isActive ? "Hot deal" : product.badge}
@@ -211,10 +211,10 @@ function CoverflowCard({ product, offset, onSelect }: CoverflowCardProps) {
         <span className="text-lg font-semibold text-ink">{product.name}</span>
         <span className="flex items-baseline gap-2">
           {product.compareAtPrice && <s className="text-[13px] text-muted">{product.compareAtPrice}</s>}
-          <span className="font-display text-[22px] font-bold text-lime-dark">{product.price}</span>
+          <span className="font-display text-[22px] font-bold text-brand">{product.price}</span>
         </span>
         <span className="inline-flex items-center gap-[7px] rounded-full border border-line bg-surface px-3 py-[7px] text-xs font-semibold text-ink">
-          <span className="size-1.5 rounded-full bg-lime" />
+          <span className="size-1.5 rounded-full bg-[#ffc933]" />
           Pay in 3 with Payflex
         </span>
       </span>

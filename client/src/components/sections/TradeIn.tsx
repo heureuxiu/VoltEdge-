@@ -9,7 +9,7 @@ const storageOptions = ["128GB", "256GB", "512GB"];
 const conditions = ["Like new", "Good", "Cracked"];
 
 const selectClassName =
-  "h-12 rounded-xl border border-[#d5d8df] bg-surface px-3.5 text-[15px] font-normal focus:border-brand focus:outline-none";
+  "h-12 rounded-xl border border-[#d4d4d8] bg-surface px-3.5 text-[15px] font-normal focus:border-brand focus:outline-none";
 
 export function TradeIn() {
   const [requested, setRequested] = useState(false);
@@ -23,21 +23,21 @@ export function TradeIn() {
   return (
     <section
       id="trade-in"
-      className="surface-glow relative mt-4 flex scroll-mt-28 flex-wrap items-center gap-12 overflow-hidden rounded-panel p-7 text-ink ring-1 ring-line sm:p-12 lg:p-16"
+      className="relative mt-4 flex scroll-mt-28 flex-wrap items-center gap-12 overflow-hidden rounded-panel surface-glow p-7 text-ink ring-1 ring-line sm:p-12 lg:p-16"
       aria-labelledby="trade-title"
     >
-      <div aria-hidden className="absolute -bottom-64 -left-48 size-[520px] animate-spin-slow rounded-full border border-dashed border-lime/40" />
-      <div aria-hidden className="absolute -top-16 right-10 size-72 rounded-full bg-brand opacity-[0.12] blur-[90px]" />
+      <div aria-hidden className="absolute -bottom-64 -left-48 size-[520px] animate-spin-slow rounded-full border border-dashed border-ink/10" />
+      <div aria-hidden className="absolute -top-16 right-10 size-72 rounded-full bg-hero opacity-[0.1] blur-[90px]" />
 
       <div className="relative flex flex-[1_1_380px] flex-col gap-4">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-lime-dark">Trade-in</span>
+        <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-hero">Trade-in</span>
         <h2 id="trade-title" className="text-[clamp(2rem,4vw,3.25rem)] font-bold leading-[1.05]">
           What&apos;s your old phone worth?
         </h2>
         <p className="max-w-[440px] text-[17px] leading-relaxed text-muted">
           Get an instant estimate, bring it in for a quick check, and put the credit straight towards your upgrade.
         </p>
-        <Link href="#guides" className="text-[15px] font-semibold text-lime-dark hover:underline">
+        <Link href="#guides" className="text-[15px] font-semibold text-hero hover:underline">
           Read: How much is my old iPhone worth? →
         </Link>
       </div>
@@ -69,7 +69,7 @@ export function TradeIn() {
         </div>
         <button
           type="submit"
-          className="h-[52px] rounded-[14px] bg-lime text-base font-bold text-ink transition-transform hover:-translate-y-0.5"
+          className="h-[52px] rounded-[14px] bg-accent text-base font-bold text-ink transition-transform hover:-translate-y-0.5"
         >
           Get my estimate
         </button>

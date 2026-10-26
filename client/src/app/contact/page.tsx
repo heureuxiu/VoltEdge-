@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Mail, MapPin, MessageCircle, Phone, Zap } from "lucide-react";
+import { Mail, MapPin, Phone, Zap } from "lucide-react";
+
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 import { ContactForm } from "@/components/contact/ContactForm";
 import { Container } from "@/components/ui/Container";
@@ -15,10 +17,10 @@ export const metadata: Metadata = {
 };
 
 const channels = [
-  { title: "WhatsApp", value: siteConfig.whatsapp, cta: "Start a chat", icon: MessageCircle, card: "bg-green-600 text-white", iconWrap: "bg-white/18 text-white", sub: "text-green-100" },
+  { title: "WhatsApp", value: siteConfig.whatsapp, cta: "Start a chat", icon: WhatsAppIcon, card: "bg-green-600 text-white", iconWrap: "bg-white/18 text-white", sub: "text-green-100" },
   { title: "Call us", value: siteConfig.phone, cta: "Call now", icon: Phone, card: "bg-white ring-1 ring-line", iconWrap: "bg-brand-soft text-brand", sub: "text-muted" },
   { title: "Email", value: siteConfig.email, cta: "Send email", icon: Mail, card: "bg-white ring-1 ring-line", iconWrap: "bg-repair-soft text-repair", sub: "text-muted" },
-  { title: "Visit the store", value: siteConfig.address, cta: "Directions", icon: MapPin, card: "bg-lime", iconWrap: "bg-ink text-lime", sub: "text-[#2a3000]" },
+  { title: "Visit the store", value: siteConfig.address, cta: "Directions", icon: MapPin, card: "bg-accent text-ink", iconWrap: "bg-white text-ink", sub: "text-ink/70" },
 ];
 
 export default function ContactPage() {
@@ -28,13 +30,13 @@ export default function ContactPage() {
         breadcrumbs={[{ label: "Home", href: routes.home }, { label: "Contact" }]}
         title={
           <>
-            Let&apos;s talk <span className="text-lime-dark">tech.</span>
+            Let&apos;s talk <span className="text-hero">tech.</span>
           </>
         }
         description="Questions about a phone, a repair or a trade-in? Chat to a real person — or pop into the store."
         aside={
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-[18px] py-3 font-semibold">
-            <span className="size-2.5 animate-pulse-dot rounded-full bg-lime" />
+          <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-white px-[18px] py-3 font-semibold text-ink">
+            <span className="size-2.5 animate-pulse-dot rounded-full bg-accent" />
             Open now · closes [TIME]
           </span>
         }
@@ -46,7 +48,7 @@ export default function ContactPage() {
             <Link
               href="#"
               className={cn(
-                "flex h-full min-h-[210px] flex-col justify-between gap-5 rounded-card p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(11_12_16/0.35)]",
+                "flex h-full min-h-[210px] flex-col justify-between gap-5 rounded-card p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]",
                 c.card,
               )}
             >
@@ -69,18 +71,18 @@ export default function ContactPage() {
         <section className="flex min-w-0 flex-[1_1_400px] flex-col gap-4" aria-label="Visit us">
           {/* Replace with a Google Maps embed */}
           <div role="img" aria-label="[MAP EMBED — store location]" className="relative h-[300px] overflow-hidden rounded-panel bg-brand-soft">
-            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(rgb(43_75_255/0.1)_1px,transparent_1px),linear-gradient(90deg,rgb(43_75_255/0.1)_1px,transparent_1px)] bg-[size:36px_36px]" />
+            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(rgb(17_17_17/0.1)_1px,transparent_1px),linear-gradient(90deg,rgb(17_17_17/0.1)_1px,transparent_1px)] bg-[size:36px_36px]" />
             <div aria-hidden className="absolute -left-10 top-[140px] h-[26px] w-[520px] -rotate-12 bg-white" />
             <div aria-hidden className="absolute -top-5 left-[190px] h-[360px] w-[22px] rotate-[18deg] bg-white" />
             <div className="absolute left-1/2 top-[46%] flex -translate-x-1/2 -translate-y-full flex-col items-center">
-              <span className="grid size-[54px] animate-float-soft place-items-center rounded-[50%_50%_50%_0] bg-ink [rotate:-45deg]">
-                <Zap className="size-[22px] rotate-45 text-lime" strokeWidth={2.4} aria-hidden />
+              <span className="grid size-[54px] animate-float-soft place-items-center rounded-[50%_50%_50%_0] bg-brand [rotate:-45deg]">
+                <Zap className="size-[22px] rotate-45 text-white" strokeWidth={2.4} aria-hidden />
               </span>
-              <span className="mt-1.5 size-3 animate-pulse-dot rounded-full bg-lime" />
+              <span className="mt-1.5 size-3 animate-pulse-dot rounded-full bg-accent" />
             </div>
             <Link
               href={siteConfig.mapsUrl}
-              className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-[0_12px_24px_-12px_rgb(11_12_16/0.3)] transition-transform hover:-translate-y-0.5"
+              className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-[0_12px_24px_-12px_rgb(17_17_17/0.3)] transition-transform hover:-translate-y-0.5"
             >
               {siteConfig.address} · Get directions →
             </Link>

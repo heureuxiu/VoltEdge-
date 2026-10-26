@@ -19,7 +19,7 @@ export default function HomePage() {
     <Container className="pt-6">
       <Hero />
     </Container>
-    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+    <div className="mx-auto w-full max-w-[1348px] px-4 sm:px-6">
       <QuickActions />
       <BestSellersCarousel />
       <Categories />
