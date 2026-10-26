@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Reveal } from "@/components/ui/Reveal";
 import { repairServices, repairSteps } from "@/data/content";
@@ -23,7 +26,7 @@ export function Repairs() {
         <ol className="mt-2 flex flex-col gap-3.5">
           {repairSteps.map((step, index) => (
             <li key={step.title} className="flex items-start gap-4">
-              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-ink font-display font-bold text-lime">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand font-display font-bold text-white">
                 {index + 1}
               </span>
               <span>
@@ -45,19 +48,26 @@ export function Repairs() {
 
       <div className="grid flex-[1_1_420px] grid-cols-2 gap-3">
         {repairServices.map(({ name, icon: Icon }, index) => (
-          <Reveal
-            key={name}
-            delay={index * 0.06}
-            className="flex flex-col gap-5 rounded-[20px] bg-surface p-5 transition-transform duration-300 hover:-translate-y-1.5"
-          >
-            <span className="grid size-11 place-items-center rounded-xl bg-white">
-              <Icon className="size-5 text-repair" strokeWidth={1.9} aria-hidden />
-            </span>
-            <span>
-              <b className="text-base">{name}</b>
-              <br />
-              <span className="text-[13px] text-muted">From R [PRICE]</span>
-            </span>
+          <Reveal key={name} delay={index * 0.06}>
+            <Link
+              href="/repairs/book"
+              className={`group flex h-full flex-col gap-5 rounded-[20px] bg-surface p-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_40px_-24px_rgb(17_17_17/0.3)]`}
+            >
+              <span className="flex items-start justify-between">
+                <span className="grid size-12 place-items-center rounded-2xl bg-white text-ink">
+                  <Icon className="size-6" strokeWidth={1.7} aria-hidden />
+                </span>
+                <ArrowUpRight
+                  className="size-5 text-muted opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink group-hover:opacity-100"
+                  aria-hidden
+                />
+              </span>
+              <span>
+                <b className="text-base">{name}</b>
+                <br />
+                <span className="text-[13px] text-muted">From R [PRICE]</span>
+              </span>
+            </Link>
           </Reveal>
         ))}
       </div>

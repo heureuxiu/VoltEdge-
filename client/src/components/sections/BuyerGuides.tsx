@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { guides } from "@/data/content";
-import { cn } from "@/lib/utils";
 
 export function BuyerGuides() {
   return (
@@ -23,10 +23,18 @@ export function BuyerGuides() {
           <Reveal key={guide.title} delay={(index % 3) * 0.08}>
             <Link
               href={guide.href}
-              className="group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(11_12_16/0.35)]"
+              className={`group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]`}
             >
-              <div className={cn("flex h-36 items-end p-4", guide.tint)}>
-                <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold">{guide.tag}</span>
+              <div className="relative flex h-44 items-end overflow-hidden bg-surface p-4">
+                <Image
+                  src={guide.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-transparent" />
+                <span className="relative rounded-full bg-white px-3 py-1.5 text-xs font-semibold shadow-sm">{guide.tag}</span>
               </div>
               <div className="flex items-start justify-between gap-4 p-5">
                 <b className="text-[17px] leading-snug">{guide.title}</b>

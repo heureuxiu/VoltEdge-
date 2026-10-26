@@ -61,6 +61,7 @@ export interface HeroSlide {
 export interface Guide {
   tag: string;
   title: string;
+  image: string;
   tint: string;
   href: string;
 }

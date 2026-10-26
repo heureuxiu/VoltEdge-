@@ -28,7 +28,7 @@ export const heroSlides: HeroSlide[] = [
     cta: { label: "Shop iPhone", href: "/shop" },
     image: "/images/hero/iphone-17-pro-deep-blue.webp",
     imageAlt: "iPhone 17 Pro Max in deep blue, back and front",
-    glow: "bg-brand",
+    glow: "bg-white",
     card: { title: "iPhone 17 Pro Max", subtitle: "From R [PRICE] · or 3 × R [AMOUNT]" },
   },
   {
@@ -41,31 +41,31 @@ export const heroSlides: HeroSlide[] = [
     cta: { label: "Book a repair", href: "/repairs" },
     image: "/images/hero/iphone-17-pro-silver.webp",
     imageAlt: "iPhone 17 Pro in silver, back and front",
-    glow: "bg-orange-500",
+    glow: "bg-white",
     card: { title: "Screen repair", subtitle: "From R [PRICE] · same day" },
   },
   {
     id: "trade-in",
     tag: "Trade-in",
-    tagClassName: "bg-lime text-ink",
+    tagClassName: "bg-accent text-ink",
     titleTop: "Old phone,",
     titleBottom: "new upgrade.",
     body: "Get an instant estimate for your current device, bring it in for a quick check and put the credit straight towards something new.",
     cta: { label: "Get a quote", href: "/trade-in" },
     image: "/images/hero/iphone-17-pro-cosmic-orange.webp",
     imageAlt: "iPhone 17 Pro in cosmic orange, back and front",
-    glow: "bg-lime",
+    glow: "bg-white",
     card: { title: "Trade-in estimate", subtitle: "Up to R [VALUE] credit" },
   },
 ];
 
 export const categories: Category[] = [
   { name: "Phones", description: "iPhone, Samsung & more", icon: Smartphone, tint: "bg-brand-soft", href: "/shop" },
-  { name: "Laptops", description: "MacBook & Windows", icon: Laptop, tint: "bg-lime-soft", href: "/shop" },
+  { name: "Laptops", description: "MacBook & Windows", icon: Laptop, tint: "bg-accent-soft", href: "/shop" },
   { name: "Tablets", description: "iPad & Android", icon: Tablet, tint: "bg-repair-soft", href: "/shop" },
-  { name: "TVs & Gadgets", description: "Smart home & more", icon: Tv, tint: "bg-[#e9f7ef]", href: "/shop" },
-  { name: "Gaming", description: "Controllers & keyboards", icon: Gamepad2, tint: "bg-[#efe9ff]", href: "/shop" },
-  { name: "Accessories", description: "Cases, chargers, audio", icon: Headphones, tint: "bg-[#f1f3f6]", href: "/shop" },
+  { name: "TVs & Gadgets", description: "Smart home & more", icon: Tv, tint: "bg-[#f4f4f5]", href: "/shop" },
+  { name: "Gaming", description: "Controllers & keyboards", icon: Gamepad2, tint: "bg-[#f1f1f3]", href: "/shop" },
+  { name: "Accessories", description: "Cases, chargers, audio", icon: Headphones, tint: "bg-[#f4f4f5]", href: "/shop" },
 ];
 
 export const repairServices: { name: string; icon: IconItem["icon"] }[] = [
@@ -92,15 +92,18 @@ export const perks: IconItem[] = [
 
 export const reviewTopics = [
   { topic: "Screen repair", tint: "bg-brand-soft" },
-  { topic: "Bought a pre-owned iPhone", tint: "bg-lime-soft" },
+  { topic: "Bought a pre-owned iPhone", tint: "bg-accent-soft" },
   { topic: "Traded in an old phone", tint: "bg-repair-soft" },
+  { topic: "Battery replacement", tint: "bg-accent-soft" },
+  { topic: "Bought a laptop", tint: "bg-repair-soft" },
+  { topic: "Pay in 3 checkout", tint: "bg-brand-soft" },
 ];
 
 export const guides: Guide[] = [
-  { tag: "Pre-owned", title: "Is buying a pre-owned iPhone safe?", tint: "bg-brand-soft", href: "#guides" },
-  { tag: "Repairs", title: "iPhone screen repair: 2026 prices", tint: "bg-repair-soft", href: "#guides" },
-  { tag: "Trade-in", title: "How much is my old iPhone worth?", tint: "bg-lime-soft", href: "#guides" },
-  { tag: "Safety", title: "How to spot a stolen or blacklisted iPhone", tint: "bg-[#e9f7ef]", href: "#guides" },
-  { tag: "Finance", title: "Payflex vs Mobicred vs PayJustNow", tint: "bg-[#efe9ff]", href: "#guides" },
-  { tag: "Compare", title: "iPhone 13 vs iPhone 14 in 2026", tint: "bg-[#f1f3f6]", href: "#guides" },
+  { tag: "Pre-owned", title: "Is buying a pre-owned iPhone safe?", image: "/images/guides/pre-owned.jpg", tint: "bg-brand-soft", href: "#guides" },
+  { tag: "Repairs", title: "iPhone screen repair: 2026 prices", image: "/images/guides/screen-repair.jpg", tint: "bg-repair-soft", href: "#guides" },
+  { tag: "Trade-in", title: "How much is my old iPhone worth?", image: "/images/guides/trade-in.jpg", tint: "bg-accent-soft", href: "#guides" },
+  { tag: "Safety", title: "How to spot a stolen or blacklisted iPhone", image: "/images/guides/safety.jpg", tint: "bg-[#f4f4f5]", href: "#guides" },
+  { tag: "Finance", title: "Payflex vs Mobicred vs PayJustNow", image: "/images/guides/finance.jpg", tint: "bg-[#f1f1f3]", href: "#guides" },
+  { tag: "Compare", title: "iPhone 13 vs iPhone 14 in 2026", image: "/images/guides/compare.jpg", tint: "bg-[#f4f4f5]", href: "#guides" },
 ];

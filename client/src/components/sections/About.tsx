@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 
 import { Reveal } from "@/components/ui/Reveal";
 import { siteConfig } from "@/data/site";
@@ -6,11 +8,19 @@ import { siteConfig } from "@/data/site";
 export function About() {
   return (
     <section className="mt-24 flex flex-wrap gap-4" aria-labelledby="about-title">
-      {/* Replace with a real store photo: <Image src="/images/store.jpg" ... /> */}
-      <div className="relative flex min-h-[420px] flex-[1_1_420px] items-end overflow-hidden rounded-panel bg-brand-soft p-7">
-        <div aria-hidden className="absolute -right-20 -top-20 size-80 rounded-full bg-brand/18" />
-        <span className="relative rounded-[14px] bg-white px-4 py-3 text-sm font-semibold">
-          [STORE PHOTO] · {siteConfig.address}
+      {/* Placeholder store photo (Unsplash) — swap /public/images/about/store.jpg for your own shop photo. */}
+      <div className="group relative flex min-h-[420px] flex-[1_1_420px] items-end overflow-hidden rounded-panel bg-surface p-7">
+        <Image
+          src="/images/about/store.jpg"
+          alt={`Inside the ${siteConfig.name} store`}
+          fill
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
+        <span className="relative flex items-center gap-2 rounded-[14px] bg-white px-4 py-3 text-sm font-semibold shadow-[0_12px_24px_-12px_rgb(17_17_17/0.5)]">
+          <MapPin className="size-4" aria-hidden />
+          {siteConfig.address}
         </span>
       </div>
 

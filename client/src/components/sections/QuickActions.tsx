@@ -31,10 +31,10 @@ const actions: Action[] = [
     description: "Swap your old device for credit towards your next upgrade.",
     href: "/trade-in",
     icon: Repeat,
-    cardClassName: "bg-lime",
-    iconWrapClassName: "bg-ink",
-    iconClassName: "text-lime",
-    descriptionClassName: "text-[#2a3000]",
+    cardClassName: "bg-[#fff1b8] text-ink ring-1 ring-[#f3dd8a]",
+    iconWrapClassName: "bg-white",
+    iconClassName: "text-ink",
+    descriptionClassName: "text-ink/70",
   },
   {
     title: "Repair",
@@ -56,7 +56,7 @@ export function QuickActions() {
           <Link
             href={action.href}
             className={cn(
-              "group flex h-full flex-col gap-10 rounded-card p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(11_12_16/0.35)]",
+              "group flex h-full flex-col gap-10 rounded-card p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]",
               action.cardClassName,
             )}
           >
