@@ -95,7 +95,18 @@ export const popularSearches: string[] = [
   "Laptop repairs",
 ];
 
-export const brands: string[] = ["Apple", "Samsung", "Xiaomi", "Huawei", "JBL", "Aula", "PXN", "Lenovo", "HP"];
+/** Brand strip. `logo` is a file in /public/images/brands; brands without one fall back to a text wordmark. */
+export const brands: { name: string; logo?: string; w?: number }[] = [
+  { name: "Apple", logo: "/images/brands/apple.svg" },
+  { name: "Samsung", logo: "/images/brands/samsung.svg", w: 132 },
+  { name: "Xiaomi", logo: "/images/brands/xiaomi.svg" },
+  { name: "Huawei", logo: "/images/brands/huawei.svg" },
+  { name: "JBL", logo: "/images/brands/jbl.svg" },
+  { name: "Aula" },
+  { name: "PXN" },
+  { name: "Lenovo", logo: "/images/brands/lenovo.svg", w: 104 },
+  { name: "HP", logo: "/images/brands/hp.svg" },
+];
 
 export const storeHours = [
   { day: "Monday – Friday", time: "[OPEN] – [CLOSE]", highlight: true },

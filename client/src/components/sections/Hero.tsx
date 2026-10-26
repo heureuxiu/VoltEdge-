@@ -4,20 +4,25 @@ import Image from "next/image";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
-  ArrowRight,
+  Calculator,
   ChevronLeft,
   ChevronRight,
   Clock,
-  MessageCircle,
+  ShoppingBag,
   ShieldCheck,
   BadgeCheck,
+  Wrench,
 } from "lucide-react";
 
+import { HeroBackdrop } from "@/components/sections/HeroBackdrop";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Marquee } from "@/components/ui/Marquee";
 import { heroSlides } from "@/data/content";
 import { brands, siteConfig } from "@/data/site";
 import { cn, wrapIndex } from "@/lib/utils";
+
+const ctaIcons = { "new-arrival": ShoppingBag, repairs: Wrench, "trade-in": Calculator } as const;
 
 const AUTOPLAY_MS = 5500;
 const ease = [0.2, 0.7, 0.2, 1] as const;
@@ -26,6 +31,7 @@ export function Hero() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const slide = heroSlides[active];
+  const CtaIcon = ctaIcons[slide.id as keyof typeof ctaIcons] ?? ShoppingBag;
 
   const go = useCallback((index: number) => setActive(wrapIndex(index, heroSlides.length)), []);
 
@@ -41,20 +47,16 @@ export function Hero() {
       aria-label="Featured"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className="surface-glow relative overflow-hidden rounded-panel text-ink ring-1 ring-line"
+      className="relative overflow-hidden rounded-panel bg-[linear-gradient(135deg,#ffffff_0%,#fffaf0_50%,#f2f5ff_100%)] text-ink ring-1 ring-line"
     >
-      {/* Decorative rings + colour wash */}
-      <div aria-hidden className="absolute -right-24 -top-28 size-[460px] rounded-full bg-brand opacity-[0.1] blur-[100px]" />
-      <div aria-hidden className="absolute -bottom-20 -left-16 size-[380px] rounded-full bg-lime opacity-[0.18] blur-[100px]" />
-      <div aria-hidden className="absolute -right-56 -top-56 size-[760px] animate-spin-slow rounded-full border border-dashed border-brand/10" />
-      <div aria-hidden className="absolute -right-20 -top-20 size-[480px] rounded-full border border-brand/8" />
+      <HeroBackdrop />
 
       <div className="relative flex flex-wrap items-center gap-10 px-6 pb-10 pt-8 sm:px-12 lg:px-[72px] lg:pt-[72px]">
         {/* Copy */}
         <div className="flex min-w-0 flex-[1_1_440px] flex-col gap-6">
           <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface py-2 pl-2.5 pr-3.5 text-[13px] font-medium">
-              <span className="size-2 animate-pulse-dot rounded-full bg-lime" />
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-white py-2 pl-2.5 pr-3.5 text-[13px] font-medium text-ink">
+              <span className="size-2 animate-pulse-dot rounded-full bg-accent" />
               Open now · Walk-ins welcome
             </span>
             <span
@@ -80,7 +82,7 @@ export function Hero() {
               >
                 <h1 className="font-display text-[1em] font-bold leading-none">
                   <span className="block whitespace-nowrap">{slide.titleTop}</span>
-                  <span className="block whitespace-nowrap text-lime-dark">{slide.titleBottom}</span>
+                  <span className="block whitespace-nowrap text-hero">{slide.titleBottom}</span>
                 </h1>
                 <p className="line-clamp-3 max-w-[480px] font-sans text-lg leading-[1.6] text-muted">
                   {slide.body}
@@ -90,12 +92,12 @@ export function Hero() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <ButtonLink href={slide.cta.href} variant="lime" className="min-w-[196px] min-h-[54px]">
+            <ButtonLink href={slide.cta.href} variant="accent" className="min-w-[196px] min-h-[54px]">
+              <CtaIcon className="size-[18px]" strokeWidth={2.2} aria-hidden />
               {slide.cta.label}
-              <ArrowRight className="size-[18px]" strokeWidth={2.2} aria-hidden />
             </ButtonLink>
             <ButtonLink href={siteConfig.whatsappUrl} variant="outline-dark" className="min-h-[54px]">
-              <MessageCircle className="size-[18px] text-green-400" aria-hidden />
+              <WhatsAppIcon className="size-[18px] text-[#25D366]" />
               Chat on WhatsApp
             </ButtonLink>
           </div>
@@ -103,9 +105,9 @@ export function Hero() {
           <SliderControls active={active} onSelect={go} />
 
           <ul className="flex flex-wrap gap-x-7 gap-y-3 border-t border-line pt-4 text-sm text-muted">
-            <li className="flex items-center gap-2"><ShieldCheck className="size-[18px] text-lime-dark" aria-hidden />90-day warranty</li>
-            <li className="flex items-center gap-2"><Clock className="size-[18px] text-lime-dark" aria-hidden />Same-day repairs</li>
-            <li className="flex items-center gap-2"><BadgeCheck className="size-[18px] text-lime-dark" aria-hidden />Genuine stock only</li>
+            <li className="flex items-center gap-2"><ShieldCheck className="size-[18px] text-ink" aria-hidden />90-day warranty</li>
+            <li className="flex items-center gap-2"><Clock className="size-[18px] text-ink" aria-hidden />Same-day repairs</li>
+            <li className="flex items-center gap-2"><BadgeCheck className="size-[18px] text-ink" aria-hidden />Genuine stock only</li>
           </ul>
         </div>
 
@@ -153,8 +155,8 @@ export function Hero() {
           </FloatingCard>
 
           <FloatingCard className="bottom-20 right-1.5 [animation-delay:2.2s]">
-            <span className="grid size-9 place-items-center rounded-[10px] bg-ink">
-              <ShieldCheck className="size-[18px] text-lime" aria-hidden />
+            <span className="grid size-9 place-items-center rounded-[10px] bg-brand">
+              <ShieldCheck className="size-[18px] text-white" aria-hidden />
             </span>
             <span className="flex flex-col">
               <b className="text-sm">90-day warranty</b>
@@ -162,7 +164,7 @@ export function Hero() {
             </span>
           </FloatingCard>
 
-          <div className="absolute bottom-6 left-1 animate-float-soft rounded-full bg-lime px-4 py-2.5 text-[13px] font-bold text-ink shadow-[0_20px_40px_-16px_rgb(212_255_58/0.5)] [animation-delay:1.2s]">
+          <div className="absolute bottom-6 left-1 animate-float-soft rounded-full bg-accent px-4 py-2.5 text-[13px] font-bold text-ink shadow-[0_20px_40px_-16px_rgb(17_17_17/0.5)] [animation-delay:1.2s]">
             Pay in 3 · Payflex
           </div>
         </div>
@@ -172,10 +174,17 @@ export function Hero() {
       <div className="border-t border-line py-5">
         <Marquee
           items={brands}
-          duration={40}
-          trackClassName="gap-16 pr-16"
+          duration={36}
+          trackClassName="items-center"
           renderItem={(brand) => (
-            <span className="font-display text-[22px] font-semibold text-ink/35">{brand}</span>
+            <span className="flex h-10 w-[170px] items-center justify-center px-4 opacity-55 grayscale transition hover:opacity-100">
+              {brand.logo ? (
+                <Image src={brand.logo} alt={brand.name} width={96} height={32} unoptimized style={brand.w ? { width: brand.w, height: "auto" } : undefined}
+                  className={cn("object-contain", !brand.w && "h-8 w-auto max-w-full")} />
+              ) : (
+                <span className="font-logo text-[24px] font-extrabold uppercase leading-none tracking-[0.01em] text-ink">{brand.name}</span>
+              )}
+            </span>
           )}
         />
       </div>
@@ -187,7 +196,7 @@ function FloatingCard({ className, children }: { className?: string; children: R
   return (
     <div
       className={cn(
-        "absolute flex animate-float-soft items-center gap-3 rounded-[18px] bg-white p-3 pr-4 text-ink ring-1 ring-line shadow-[0_24px_48px_-18px_rgb(11_12_16/0.18)]",
+        "absolute flex animate-float-soft items-center gap-3 rounded-[18px] bg-white p-3 pr-4 text-ink ring-1 ring-line shadow-[0_24px_48px_-18px_rgb(17_17_17/0.18)]",
         className,
       )}
     >
@@ -215,7 +224,7 @@ function SliderControls({ active, onSelect }: { active: number; onSelect: (index
             <span
               className={cn(
                 "block h-1 rounded-full transition-all duration-500",
-                index === active ? "w-10 bg-lime" : "w-4 bg-ink/15",
+                index === active ? "w-10 bg-accent" : "w-4 bg-ink/15",
               )}
             />
           </button>
@@ -226,7 +235,7 @@ function SliderControls({ active, onSelect }: { active: number; onSelect: (index
           type="button"
           aria-label="Previous slide"
           onClick={() => onSelect(active - 1)}
-          className="grid size-11 place-items-center rounded-full border border-line text-ink transition-transform hover:-translate-y-0.5 hover:bg-surface"
+          className="grid size-11 place-items-center rounded-full border border-line text-ink transition-transform hover:-translate-y-0.5 hover:bg-white"
         >
           <ChevronLeft className="size-[18px]" aria-hidden />
         </button>

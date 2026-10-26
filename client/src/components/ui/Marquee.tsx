@@ -10,6 +10,8 @@ interface MarqueeProps<T> {
   className?: string;
   trackClassName?: string;
   fade?: boolean;
+  /** Slide left-to-right instead. */
+  reverse?: boolean;
 }
 
 /**
@@ -23,6 +25,7 @@ export function Marquee<T>({
   className,
   trackClassName,
   fade = true,
+  reverse = false,
 }: MarqueeProps<T>) {
   const loop = [...items, ...items];
 
@@ -30,7 +33,7 @@ export function Marquee<T>({
     <div className={cn("overflow-hidden", fade && "mask-fade-x", className)}>
       <div
         className={cn("flex w-max animate-marquee pause-on-hover", trackClassName)}
-        style={{ animationDuration: `${duration}s` }}
+        style={{ animationDuration: `${duration}s`, animationDirection: reverse ? "reverse" : "normal" }}
       >
         {loop.map((item, index) => (
           <div key={index} className="shrink-0" aria-hidden={index >= items.length || undefined}>
