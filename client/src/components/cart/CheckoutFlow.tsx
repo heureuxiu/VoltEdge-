@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, Lock, MessageCircle, Minus, Plus, Repeat, RotateCcw, ShieldCheck, Trash2 } from "lucide-react";
+import { Check, Lock, Minus, Plus, Repeat, RotateCcw, ShieldCheck, Trash2 } from "lucide-react";
+
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { ChoiceButton } from "@/components/ui/ChoiceButton";
@@ -70,10 +72,10 @@ export function CheckoutFlow() {
                 aria-current={current ? "step" : undefined}
                 className={cn(
                   "flex min-h-10 items-center gap-2 rounded-[11px] py-0 pl-1.5 pr-3.5 text-sm font-semibold transition-colors duration-300",
-                  current ? "bg-ink text-white" : done ? "text-ink" : "text-[#8a90a0]",
+                  current ? "bg-brand text-white" : done ? "text-ink" : "text-[#8a90a0]",
                 )}
               >
-                <span className={cn("grid size-7 place-items-center rounded-lg text-[13px]", current || done ? "bg-lime text-ink" : "bg-surface")}>
+                <span className={cn("grid size-7 place-items-center rounded-lg text-[13px]", current || done ? "bg-accent text-ink" : "bg-surface")}>
                   {done ? <Check className="size-3.5" aria-hidden /> : index + 1}
                 </span>
                 {label}
@@ -117,7 +119,7 @@ export function CheckoutFlow() {
                             In stock
                           </span>
                         </div>
-                        <div className="flex items-center overflow-hidden rounded-xl border border-[#d5d8df]">
+                        <div className="flex items-center overflow-hidden rounded-xl border border-[#d4d4d8]">
                           <button type="button" aria-label={`Decrease ${line.product.name} quantity`} onClick={() => updateQty(line.product.id, line.qty - 1)} className="grid size-11 place-items-center bg-surface">
                             <Minus className="size-4" aria-hidden />
                           </button>
@@ -135,15 +137,15 @@ export function CheckoutFlow() {
                   </AnimatePresence>
 
                   {lines.length === 0 && (
-                    <div className="flex flex-col items-center gap-3 rounded-card border border-dashed border-[#d5d8df] bg-white p-12 text-center">
+                    <div className="flex flex-col items-center gap-3 rounded-card border border-dashed border-[#d4d4d8] bg-white p-12 text-center">
                       <b className="font-display text-[22px]">Your cart is empty</b>
                       <ButtonLink href={routes.shop}>Continue shopping</ButtonLink>
                     </div>
                   )}
 
-                  <Link href={routes.tradeIn} className="flex flex-wrap items-center justify-between gap-4 rounded-card bg-ink px-6 py-5 text-white">
+                  <Link href={routes.tradeIn} className="flex flex-wrap items-center justify-between gap-4 rounded-card bg-brand px-6 py-5 text-white">
                     <span className="flex items-center gap-3.5">
-                      <span className="grid size-11 place-items-center rounded-xl bg-lime">
+                      <span className="grid size-11 place-items-center rounded-xl bg-white">
                         <Repeat className="size-5 text-ink" aria-hidden />
                       </span>
                       <span>
@@ -152,7 +154,7 @@ export function CheckoutFlow() {
                         <span className="text-sm text-muted-dark">Get an estimate and take it off this order.</span>
                       </span>
                     </span>
-                    <span className="font-semibold text-lime">Get a quote →</span>
+                    <span className="font-semibold text-white">Get a quote →</span>
                   </Link>
                 </>
               )}
@@ -203,13 +205,13 @@ export function CheckoutFlow() {
                       onClick={() => setPayment(index)}
                       className={cn(
                         "flex items-center gap-4 rounded-[18px] border-2 bg-white p-[18px] text-left transition-colors",
-                        payment === index ? "border-ink" : "border-line hover:border-[#c9cdd6]",
+                        payment === index ? "border-brand" : "border-line hover:border-[#d4d4d8]",
                       )}
                     >
                       <span
                         className={cn(
                           "size-[22px] shrink-0 rounded-full transition-all",
-                          payment === index ? "border-[7px] border-ink" : "border-2 border-[#c9cdd6]",
+                          payment === index ? "border-[7px] border-brand" : "border-2 border-[#d4d4d8]",
                         )}
                       />
                       <span className="flex-1">
@@ -228,16 +230,16 @@ export function CheckoutFlow() {
 
               {step === 3 && (
                 <div className="surface-glow-strong relative flex flex-col items-start gap-4 overflow-hidden rounded-panel p-8 text-ink ring-1 ring-line sm:p-14">
-                  <div aria-hidden className="absolute -right-16 -top-16 size-64 rounded-full bg-lime opacity-[0.3] blur-[90px]" />
+                  <div aria-hidden className="absolute -right-16 -top-16 size-64 rounded-full bg-white opacity-[0.3] blur-[90px]" />
                   <SuccessCheck />
                   <h2 className="text-[clamp(1.875rem,4vw,3rem)] font-bold leading-[1.05]">
-                    Order placed. <span className="text-lime-dark">Thank you!</span>
+                    Order placed. <span className="text-muted">Thank you!</span>
                   </h2>
                   <p className="max-w-[520px] text-[17px] leading-relaxed text-muted">
                     Your order number is <b className="text-ink">VE-[ORDER NO]</b>. We&apos;ve sent a confirmation to your email and WhatsApp.
                   </p>
                   <div className="mt-2 flex flex-wrap gap-3">
-                    <ButtonLink href={routes.track} variant="lime">
+                    <ButtonLink href={routes.track} variant="accent">
                       Track your order
                     </ButtonLink>
                     <ButtonLink href={routes.shop} variant="outline-dark">
@@ -258,7 +260,7 @@ export function CheckoutFlow() {
               <button
                 type="button"
                 onClick={() => setStep((s) => Math.min(3, s + 1))}
-                className="min-h-14 rounded-[14px] bg-lime text-base font-bold text-ink transition-transform hover:-translate-y-0.5"
+                className="min-h-14 rounded-[14px] bg-ink text-base font-bold text-white transition-transform hover:-translate-y-0.5"
               >
                 {["Checkout", "Continue to payment", "Place order"][step]}
               </button>
@@ -291,7 +293,7 @@ function OrderSummary({ itemCount, deliveryCost, action, back }: OrderSummaryPro
             <span className="sr-only">Promo code</span>
             <input placeholder="Promo code" className={cn(inputClassName, "h-[46px] text-sm")} />
           </label>
-          <button type="button" className="h-[46px] rounded-xl bg-ink px-4 font-semibold text-white">
+          <button type="button" className="h-[46px] rounded-xl bg-brand px-4 font-semibold text-white">
             Apply
           </button>
         </div>
@@ -311,7 +313,7 @@ function OrderSummary({ itemCount, deliveryCost, action, back }: OrderSummaryPro
         <li className="flex items-center gap-2.5"><ShieldCheck className="size-[18px]" aria-hidden />Genuine stock, never blacklisted</li>
         <li className="flex items-center gap-2.5"><RotateCcw className="size-[18px]" aria-hidden />Easy returns — see refund policy</li>
         <li className="flex items-center gap-2.5">
-          <MessageCircle className="size-[18px]" aria-hidden />
+          <WhatsAppIcon className="size-[18px]" />
           Questions?{" "}
           <Link href={routes.contact} className="font-semibold text-brand">
             Chat to us

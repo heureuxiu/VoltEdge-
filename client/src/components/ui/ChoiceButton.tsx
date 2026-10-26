@@ -7,7 +7,7 @@ type Variant = "card" | "chip" | "pill";
 interface ChoiceButtonProps extends ComponentPropsWithoutRef<"button"> {
   selected: boolean;
   variant?: Variant;
-  /** Use the lime "on dark background" style. */
+  /** Use the accent "on dark background" style. */
   onDark?: boolean;
 }
 
@@ -21,11 +21,11 @@ const shape: Record<Variant, string> = {
 export function ChoiceButton({ selected, variant = "chip", onDark, className, ...props }: ChoiceButtonProps) {
   const state = onDark
     ? selected
-      ? "border-lime bg-lime text-ink"
+      ? "border-accent bg-accent text-ink"
       : "border-white/16 bg-white/6 text-white hover:bg-white/12"
     : selected
-      ? "border-ink bg-ink text-white"
-      : "border-line bg-white text-ink hover:border-[#c9cdd6]";
+      ? "border-brand bg-brand text-white"
+      : "border-line bg-white text-ink hover:border-[#d4d4d8]";
 
   return (
     <button

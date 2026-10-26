@@ -36,7 +36,7 @@ export function ProductDetail({ product }: { product: Product }) {
               colors[color].glow,
             )}
           />
-          <span className="absolute left-5 top-5 rounded-full bg-lime px-3 py-1.5 text-xs font-bold text-ink">{product.badge}</span>
+          <span className="absolute left-5 top-5 rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-ink">{product.badge}</span>
           <button
             type="button"
             aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
@@ -44,7 +44,7 @@ export function ProductDetail({ product }: { product: Product }) {
             onClick={() => setLiked((v) => !v)}
             className="absolute right-3.5 top-3.5 grid size-12 place-items-center rounded-full border border-line bg-white"
           >
-            <Heart className={cn("size-5 text-ink", liked && "fill-lime text-lime-dark")} aria-hidden />
+            <Heart className={cn("size-5 text-ink", liked && "fill-accent text-brand")} aria-hidden />
           </button>
 
           <AnimatePresence mode="wait">
@@ -82,7 +82,7 @@ export function ProductDetail({ product }: { product: Product }) {
               onClick={() => setView(index)}
               className={cn(
                 "flex h-[110px] items-center justify-center rounded-[18px] border-2 bg-white transition-colors",
-                view === index ? "border-ink" : "border-line hover:border-[#c9cdd6]",
+                view === index ? "border-brand" : "border-line hover:border-[#d4d4d8]",
               )}
             >
               <Image src={product.image} alt="" width={80} height={100} className="h-[84px] w-auto" />
@@ -128,7 +128,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 onClick={() => setColor(index)}
                 className={cn(
                   "size-12 rounded-full border-2 bg-white p-1 transition-colors",
-                  color === index ? "border-ink" : "border-line",
+                  color === index ? "border-brand" : "border-line",
                 )}
               >
                 <span className="block size-full rounded-full shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)]" style={{ background: c.hex }} />
@@ -161,7 +161,7 @@ export function ProductDetail({ product }: { product: Product }) {
         </fieldset>
 
         <div className="flex gap-2.5">
-          <div className="flex items-center overflow-hidden rounded-[14px] border border-[#d5d8df]">
+          <div className="flex items-center overflow-hidden rounded-[14px] border border-[#d4d4d8]">
             <button type="button" aria-label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))} className="grid h-[54px] w-11 place-items-center bg-surface">
               <Minus className="size-4" aria-hidden />
             </button>
@@ -176,12 +176,12 @@ export function ProductDetail({ product }: { product: Product }) {
             <ShoppingBag className="size-[18px]" aria-hidden /> Add to cart
           </ButtonLink>
         </div>
-        <ButtonLink href={routes.cart} variant="lime" className="min-h-[54px] text-base">
+        <ButtonLink href={routes.cart} variant="accent" className="min-h-[54px] text-base">
           Buy now
         </ButtonLink>
 
         <div className="flex items-center gap-3.5 rounded-[18px] bg-surface p-4">
-          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-ink font-display font-bold text-lime">3×</span>
+          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand font-display font-bold text-white">3×</span>
           <span className="text-sm leading-normal">
             <b>Pay in 3 with Payflex</b> — 3 interest-free payments of <b>R [AMOUNT]</b>. No fees when you pay on time.
           </span>

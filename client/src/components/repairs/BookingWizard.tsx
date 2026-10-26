@@ -59,7 +59,7 @@ export function BookingWizard() {
             <span className="text-muted">{progress}%</span>
           </div>
           <div role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} className="h-2 overflow-hidden rounded bg-line">
-            <motion.div className="h-full rounded bg-ink" animate={{ width: `${Math.max(progress, 6)}%` }} transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }} />
+            <motion.div className="h-full rounded bg-brand" animate={{ width: `${Math.max(progress, 6)}%` }} transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }} />
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@ export function BookingWizard() {
                       const on = issues.includes(issue);
                       return (
                         <ChoiceButton key={issue} variant="card" selected={on} onClick={() => toggleIssue(issue)} className="flex min-h-[72px] items-center gap-3">
-                          <span className={cn("grid size-6 shrink-0 place-items-center rounded-[7px]", on ? "bg-lime text-ink" : "bg-surface text-transparent")}>
+                          <span className={cn("grid size-6 shrink-0 place-items-center rounded-[7px]", on ? "bg-accent text-ink" : "bg-surface text-transparent")}>
                             <Check className="size-3.5" strokeWidth={3} aria-hidden />
                           </span>
                           <span>
@@ -207,7 +207,7 @@ export function BookingWizard() {
               <button
                 type="button"
                 onClick={() => setStep((s) => s + 1)}
-                className="min-h-[54px] rounded-[14px] bg-lime px-7 text-base font-bold text-ink transition-transform hover:-translate-y-0.5"
+                className="min-h-[54px] rounded-[14px] bg-ink px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
               >
                 {step === 3 ? "Confirm booking" : "Continue"}
               </button>
@@ -217,7 +217,7 @@ export function BookingWizard() {
 
         <aside aria-label="Booking summary" className="surface-glow relative flex min-w-0 flex-[1_1_320px] flex-col gap-[18px] overflow-hidden rounded-panel p-8 text-ink ring-1 ring-line">
           <div aria-hidden className="absolute -right-36 -top-36 size-[360px] animate-spin-slow rounded-full border border-dashed border-brand/10" />
-          <div aria-hidden className="absolute bottom-0 left-0 size-48 rounded-full bg-lime opacity-[0.22] blur-[80px]" />
+          <div aria-hidden className="absolute bottom-0 left-0 size-48 rounded-full bg-white opacity-[0.22] blur-[80px]" />
           <b className="relative font-display text-[22px]">Your booking</b>
           <dl className="relative flex flex-col gap-3.5 text-[15px]">
             <SummaryRow label="Device" value={deviceLabel} />
@@ -227,12 +227,12 @@ export function BookingWizard() {
           </dl>
           <div className="relative flex items-baseline justify-between border-t border-line pt-4">
             <span className="text-muted">Estimated from</span>
-            <b className="font-display text-[28px] text-lime-dark">R [EST]</b>
+            <b className="font-display text-[28px] text-brand">R [EST]</b>
           </div>
           <ul className="relative flex flex-col gap-2.5 text-sm text-muted">
             {["Free diagnosis & quote first", "90-day warranty on parts & labour", "Pay after the repair"].map((item) => (
               <li key={item} className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-lime" />
+                <span className="size-1.5 rounded-full bg-accent" />
                 {item}
               </li>
             ))}

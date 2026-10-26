@@ -26,7 +26,7 @@ export const products: Product[] = [
     badge: "New",
     category: "iphone",
     image: "/images/products/iphone-17.webp",
-    tint: "bg-[#f1f3f6]",
+    tint: "bg-[#f4f4f5]",
     price: PRICE,
   },
   {
@@ -51,7 +51,7 @@ export const products: Product[] = [
     badge: "New",
     category: "samsung",
     image: "/images/products/galaxy-s25-ultra.webp",
-    tint: "bg-[#e9f7ef]",
+    tint: "bg-[#f4f4f5]",
     price: PRICE,
     compareAtPrice: WAS,
   },
@@ -64,7 +64,7 @@ export const products: Product[] = [
     badge: "New",
     category: "samsung",
     image: "/images/products/galaxy-s25.webp",
-    tint: "bg-[#f1f3f6]",
+    tint: "bg-[#f4f4f5]",
     price: PRICE,
   },
   {
@@ -76,7 +76,7 @@ export const products: Product[] = [
     badge: "Best value",
     category: "samsung",
     image: "/images/products/galaxy-a36.webp",
-    tint: "bg-lime-soft",
+    tint: "bg-accent-soft",
     price: PRICE,
   },
   {
@@ -88,7 +88,7 @@ export const products: Product[] = [
     badge: "Audio",
     category: "gadgets",
     image: "/images/products/airpods-pro-3.webp",
-    tint: "bg-[#efe9ff]",
+    tint: "bg-[#f1f1f3]",
     price: PRICE,
   },
   {
@@ -158,7 +158,7 @@ export const productColors: Record<string, { name: string; hex: string; glow: st
   default: [
     { name: "Black", hex: "#1a1c23", glow: "bg-brand" },
     { name: "White", hex: "#eef0f3", glow: "bg-slate-400" },
-    { name: "Accent", hex: "#c7d2fe", glow: "bg-lime" },
+    { name: "Accent", hex: "#c7d2fe", glow: "bg-accent" },
   ],
 };
 

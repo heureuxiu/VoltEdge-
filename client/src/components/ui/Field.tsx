@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export const inputClassName =
-  "h-[52px] w-full rounded-[14px] border border-[#d5d8df] bg-surface px-3.5 text-[15px] text-ink placeholder:text-[#8a90a0] focus:border-brand focus:outline-none";
+  "h-[52px] w-full rounded-[14px] border border-[#d4d4d8] bg-surface px-3.5 text-[15px] text-ink placeholder:text-[#8a90a0] focus:border-brand focus:outline-none";
 
 interface FieldProps extends ComponentPropsWithoutRef<"input"> {
   label: ReactNode;

@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
-import { Check, MessageCircle } from "lucide-react";
+import { Check } from "lucide-react";
+
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Breadcrumbs } from "@/components/ui/PageHero";
@@ -71,12 +73,12 @@ export function TrackOrder() {
     <>
       <section className="surface-glow relative overflow-hidden rounded-panel p-6 text-ink ring-1 ring-line sm:p-12 lg:p-16">
         <div aria-hidden className="absolute -right-44 -top-60 size-[640px] animate-spin-slow rounded-full border border-dashed border-brand/10" />
-        <div aria-hidden className="absolute -bottom-20 right-28 size-72 rounded-full bg-brand opacity-[0.16] blur-[80px]" />
-        <div aria-hidden className="absolute -bottom-10 left-20 size-56 rounded-full bg-lime opacity-[0.18] blur-[90px]" />
+        <div aria-hidden className="absolute -bottom-20 right-28 size-72 rounded-full bg-white opacity-[0.16] blur-[80px]" />
+        <div aria-hidden className="absolute -bottom-10 left-20 size-56 rounded-full bg-white opacity-[0.18] blur-[90px]" />
         <div className="relative flex max-w-[760px] flex-col gap-5">
           <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Track order" }]} tone="light" />
           <h1 className="animate-fade-up text-[clamp(2.5rem,5.2vw,4.5rem)] font-bold leading-none">
-            Where&apos;s my <span className="text-lime-dark">{data.word}?</span>
+            Where&apos;s my <span className="text-brand">{data.word}?</span>
           </h1>
           <p className="text-[17px] leading-relaxed text-muted">
             Enter your reference number and the phone number or email you used — we&apos;ll show you live progress.
@@ -93,7 +95,7 @@ export function TrackOrder() {
                   onClick={() => setKind(k)}
                   className={cn("relative min-h-[42px] rounded-[10px] px-5 text-sm font-semibold capitalize", kind === k ? "text-ink" : "text-muted")}
                 >
-                  {kind === k && <motion.span layoutId="track-tab" className="absolute inset-0 rounded-[10px] bg-lime" />}
+                  {kind === k && <motion.span layoutId="track-tab" className="absolute inset-0 rounded-[10px] bg-accent" />}
                   <span className="relative">{k}</span>
                 </button>
               ))}
@@ -109,7 +111,7 @@ export function TrackOrder() {
               <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-muted">Phone or email</span>
               <input placeholder="you@example.com" className="h-[30px] bg-transparent text-base text-ink focus:outline-none" />
             </label>
-            <button type="submit" className="min-h-14 rounded-[14px] bg-lime px-7 text-base font-bold text-ink transition-transform hover:-translate-y-0.5">
+            <button type="submit" className="min-h-14 rounded-[14px] bg-ink px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5">
               Track
             </button>
           </form>
@@ -133,8 +135,8 @@ export function TrackOrder() {
                 </span>
                 <h2 className="mt-1.5 text-[clamp(1.625rem,3vw,2.25rem)] font-bold">{data.title}</h2>
               </div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-lime-soft px-3.5 py-2 text-[13px] font-bold">
-                <span className="size-2 animate-pulse-dot rounded-full bg-lime-600" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-accent-soft px-3.5 py-2 text-[13px] font-bold">
+                <span className="size-2 animate-pulse-dot rounded-full bg-accent-dark" />
                 {data.chip}
               </span>
             </div>
@@ -156,14 +158,14 @@ export function TrackOrder() {
                       <span
                         className={cn(
                           "grid size-9 shrink-0 place-items-center rounded-full text-sm font-bold",
-                          done && "bg-ink text-lime",
-                          current && "animate-pulse-dot bg-lime text-ink",
+                          done && "bg-brand text-white",
+                          current && "animate-pulse-dot bg-accent text-ink",
                           !done && !current && "bg-surface text-[#8a90a0] ring-1 ring-line",
                         )}
                       >
                         {done ? <Check className="size-4" strokeWidth={3} aria-hidden /> : index + 1}
                       </span>
-                      {!last && <span className={cn("my-1 min-h-7 w-0.5 flex-1", done ? "bg-ink" : "bg-line")} />}
+                      {!last && <span className={cn("my-1 min-h-7 w-0.5 flex-1", done ? "bg-brand" : "bg-line")} />}
                     </div>
                     <div className="flex flex-col gap-1 pb-7">
                       <b className={cn("text-[17px]", done || current ? "text-ink" : "text-[#8a90a0]")}>{title}</b>
@@ -204,7 +206,7 @@ export function TrackOrder() {
               <b className="font-display text-xl">Need a hand?</b>
               <span className="text-sm leading-relaxed text-muted">Message us with your reference and we&apos;ll update you right away.</span>
               <ButtonLink href={routes.contact} className="self-start bg-green-600 hover:bg-green-700">
-                <MessageCircle className="size-[18px]" aria-hidden /> WhatsApp us
+                <WhatsAppIcon className="size-[18px]" /> WhatsApp us
               </ButtonLink>
             </div>
           </aside>

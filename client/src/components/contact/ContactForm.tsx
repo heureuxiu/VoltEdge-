@@ -74,7 +74,7 @@ export function ContactForm() {
             <TextAreaField label="Message" rows={5} required placeholder={topics[topic].placeholder} />
             <button
               type="submit"
-              className="min-h-14 self-start rounded-[14px] bg-ink px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="min-h-14 self-start rounded-[14px] bg-brand px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
             >
               Send message
             </button>

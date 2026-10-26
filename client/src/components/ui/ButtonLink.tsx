@@ -3,14 +3,14 @@ import type { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-type Variant = "lime" | "dark" | "light" | "ghost" | "outline-dark";
+type Variant = "accent" | "dark" | "light" | "ghost" | "outline-dark";
 
 const variants: Record<Variant, string> = {
-  lime: "bg-lime text-ink hover:bg-[#c8f520]",
-  dark: "bg-ink text-white hover:bg-ink-700",
+  accent: "bg-ink text-white hover:bg-[#333333]",
+  dark: "bg-brand text-white hover:bg-[#333333]",
   light: "bg-white text-ink hover:bg-surface",
   ghost: "bg-white/8 text-white ring-1 ring-white/15 hover:bg-white/14",
-  "outline-dark": "bg-surface text-ink hover:bg-line",
+  "outline-dark": "bg-white text-ink ring-1 ring-line hover:bg-surface",
 };
 
 interface ButtonLinkProps extends ComponentPropsWithoutRef<typeof Link> {

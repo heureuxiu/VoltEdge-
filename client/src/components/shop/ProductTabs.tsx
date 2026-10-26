@@ -36,7 +36,7 @@ export function ProductTabs({ product }: { product: Product }) {
               className={cn("relative min-h-11 rounded-xl px-[18px] text-sm font-semibold", active === tab ? "text-white" : "text-ink")}
             >
               {active === tab && (
-                <motion.span layoutId="product-tab" className="absolute inset-0 rounded-xl bg-ink" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
+                <motion.span layoutId="product-tab" className="absolute inset-0 rounded-xl bg-brand" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
               )}
               <span className="relative">{tab}</span>
             </button>

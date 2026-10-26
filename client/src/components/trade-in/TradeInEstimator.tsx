@@ -23,10 +23,10 @@ export function TradeInEstimator() {
   const grade = gradeFromAnswers(answers);
 
   return (
-    <div className="relative flex min-w-0 flex-[1_1_420px] flex-col gap-5 rounded-[28px] bg-white p-7 text-ink ring-1 ring-line shadow-[0_30px_60px_-30px_rgb(11_12_16/0.15)]">
+    <div className="relative flex min-w-0 flex-[1_1_420px] flex-col gap-5 rounded-[28px] bg-white p-7 text-ink ring-1 ring-line shadow-[0_30px_60px_-30px_rgb(17_17_17/0.15)]">
       <div className="flex items-center justify-between">
         <b className="font-display text-[22px]">Get your estimate</b>
-        <span className="rounded-full bg-lime-soft px-2.5 py-1.5 text-xs font-bold">About a minute</span>
+        <span className="rounded-full bg-accent-soft px-2.5 py-1.5 text-xs font-bold">About a minute</span>
       </div>
 
       <fieldset>
@@ -65,7 +65,7 @@ export function TradeInEstimator() {
                     role="radio"
                     aria-checked={on}
                     onClick={() => setAnswers((prev) => ({ ...prev, [id]: value }))}
-                    className={cn("min-h-9 min-w-[52px] rounded-[9px] text-[13px] font-semibold transition-colors", on ? "bg-ink text-white" : "text-ink")}
+                    className={cn("min-h-9 min-w-[52px] rounded-[9px] text-[13px] font-semibold transition-colors", on ? "bg-brand text-white" : "text-ink")}
                   >
                     {value ? "Yes" : "No"}
                   </button>
@@ -76,7 +76,7 @@ export function TradeInEstimator() {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] bg-lime-soft p-[18px] text-ink ring-1 ring-lime/40">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] bg-accent-soft p-[18px] text-ink ring-1 ring-accent/40">
         <span>
           <span className="block text-[13px] text-muted">
             Estimated credit ·{" "}
@@ -86,9 +86,9 @@ export function TradeInEstimator() {
               </motion.b>
             </AnimatePresence>
           </span>
-          <b className="font-display text-[28px] text-lime-dark">R [MIN] – R [MAX]</b>
+          <b className="font-display text-[28px] text-brand">R [MIN] – R [MAX]</b>
         </span>
-        <ButtonLink href={routes.bookRepair} variant="lime" className="whitespace-nowrap rounded-xl">
+        <ButtonLink href={routes.bookRepair} variant="accent" className="whitespace-nowrap rounded-xl">
           Book check-in
         </ButtonLink>
       </div>

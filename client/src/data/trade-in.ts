@@ -23,8 +23,8 @@ export const tradeInSteps = [
 ];
 
 export const tradeInGrades = [
-  { grade: "Grade A", title: "Like new", description: "No visible marks, screen perfect, battery healthy and everything works.", badgeClassName: "bg-lime text-ink" },
-  { grade: "Grade B", title: "Good", description: "Light scratches or scuffs, fully working, no cracks on the screen or back.", badgeClassName: "bg-brand-soft text-blue-900" },
+  { grade: "Grade A", title: "Like new", description: "No visible marks, screen perfect, battery healthy and everything works.", badgeClassName: "bg-accent text-ink" },
+  { grade: "Grade B", title: "Good", description: "Light scratches or scuffs, fully working, no cracks on the screen or back.", badgeClassName: "bg-brand-soft text-ink" },
   { grade: "Grade C", title: "Needs work", description: "Cracked glass, heavy wear or a fault — we still make an offer.", badgeClassName: "bg-repair-soft text-orange-800" },
 ];
 

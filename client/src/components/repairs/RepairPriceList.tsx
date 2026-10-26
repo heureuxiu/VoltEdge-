@@ -32,7 +32,7 @@ export function RepairPriceList() {
                 className={cn("relative min-h-11 rounded-xl px-4 text-sm font-semibold", device === d.value ? "text-white" : "text-ink")}
               >
                 {device === d.value && (
-                  <motion.span layoutId="repair-device" className="absolute inset-0 rounded-xl bg-ink" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
+                  <motion.span layoutId="repair-device" className="absolute inset-0 rounded-xl bg-brand" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
                 )}
                 <span className="relative">{d.label}</span>
               </button>

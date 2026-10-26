@@ -20,12 +20,12 @@ export function NewsletterForm() {
           type="email"
           required
           placeholder="you@example.com"
-          className="h-[52px] rounded-2xl border border-line bg-white px-4 text-[15px] text-ink placeholder:text-muted focus:border-lime focus:outline-none"
+          className="h-[52px] rounded-2xl border border-line bg-white px-4 text-[15px] text-ink placeholder:text-muted focus:border-accent focus:outline-none"
         />
       </label>
       <button
         type="submit"
-        className="inline-flex h-[52px] items-center gap-2 self-end rounded-2xl bg-lime px-6 font-bold text-ink transition-transform hover:-translate-y-0.5"
+        className="inline-flex h-[52px] items-center gap-2 self-end rounded-2xl bg-white px-6 font-bold text-ink transition-transform hover:-translate-y-0.5"
       >
         {submitted ? (
           <>
