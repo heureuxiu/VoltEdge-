@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   description: "Get an instant estimate for your old phone and put the credit towards your upgrade.",
 };
 
+/** Pastel card colours for the trade-in steps: blue, mint, yellow. */
+const stepTones = [
+  "bg-[#e4ebff] ring-[#d3defc]",
+  "bg-[#dff4e8] ring-[#c7e8d6]",
+  "bg-[#fff1b8] ring-[#f3dd8a]",
+];
+
 export default function TradeInPage() {
   return (
     <Container className="pt-6">
@@ -64,23 +71,20 @@ export default function TradeInPage() {
           </h2>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {tradeInSteps.map((step, index) => {
-            const last = index === tradeInSteps.length - 1;
-            return (
-              <Reveal
-                key={step.title}
-                delay={index * 0.08}
-                className={cn(
-                  "flex flex-col gap-3.5 rounded-card p-7 transition-all duration-300 hover:-translate-y-1.5",
-                  last ? "bg-accent text-ink" : "bg-white ring-1 ring-line",
-                )}
-              >
-                <span className={cn("grid size-[52px] place-items-center rounded-2xl font-display text-xl font-bold", last ? "bg-white text-ink" : "bg-brand text-white")}>{index + 1}</span>
-                <b className="font-display text-xl">{step.title}</b>
-                <span className={cn("leading-normal", last ? "text-ink/70" : "text-muted")}>{step.description}</span>
-              </Reveal>
-            );
-          })}
+          {tradeInSteps.map((step, index) => (
+            <Reveal
+              key={step.title}
+              delay={index * 0.08}
+              className={cn(
+                "flex flex-col gap-3.5 rounded-card p-7 ring-1 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.3)]",
+                stepTones[index % stepTones.length],
+              )}
+            >
+              <span className="grid size-[52px] place-items-center rounded-2xl bg-ink font-display text-xl font-bold text-white">{index + 1}</span>
+              <b className="font-display text-xl">{step.title}</b>
+              <span className="leading-normal text-ink/65">{step.description}</span>
+            </Reveal>
+          ))}
         </div>
       </section>
 

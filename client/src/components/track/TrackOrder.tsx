@@ -22,7 +22,6 @@ const tracking = {
     placeholder: "VE-000000",
     ref: "VE-[ORDER NO]",
     title: "Your order is on the way",
-    chip: "In transit",
     etaLabel: "Estimated delivery",
     item: "iPhone 17 Pro Max",
     itemSub: "Deep Blue · 256GB",
@@ -42,7 +41,6 @@ const tracking = {
     placeholder: "RP-000000",
     ref: "RP-[REF]",
     title: "Your repair is in progress",
-    chip: "Same-day repair",
     etaLabel: "Ready by",
     item: "iPhone 15 Pro",
     itemSub: "Screen replacement",
@@ -81,7 +79,7 @@ export function TrackOrder() {
             Where&apos;s my <span className="text-brand">{data.word}?</span>
           </h1>
           <p className="text-[17px] leading-relaxed text-muted">
-            Enter your reference number and the phone number or email you used — we&apos;ll show you live progress.
+            Enter your reference number — we&apos;ll show you live progress.
           </p>
 
           <LayoutGroup id="track-kind">
@@ -105,11 +103,7 @@ export function TrackOrder() {
           <form onSubmit={handleSubmit} className="flex flex-wrap gap-2.5 rounded-[20px] bg-white p-2">
             <label className="flex flex-[1_1_200px] flex-col justify-center px-3 py-1">
               <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-muted">{data.refLabel}</span>
-              <input placeholder={data.placeholder} className="h-[30px] bg-transparent text-base text-ink focus:outline-none" />
-            </label>
-            <label className="flex flex-[1_1_200px] flex-col justify-center border-l border-line px-3 py-1">
-              <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-muted">Phone or email</span>
-              <input placeholder="you@example.com" className="h-[30px] bg-transparent text-base text-ink focus:outline-none" />
+              <input required placeholder={data.placeholder} className="h-[30px] bg-transparent text-base text-ink focus:outline-none" />
             </label>
             <button type="submit" className="min-h-14 rounded-[14px] bg-ink px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5">
               Track
@@ -135,10 +129,6 @@ export function TrackOrder() {
                 </span>
                 <h2 className="mt-1.5 text-[clamp(1.625rem,3vw,2.25rem)] font-bold">{data.title}</h2>
               </div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-accent-soft px-3.5 py-2 text-[13px] font-bold">
-                <span className="size-2 animate-pulse-dot rounded-full bg-accent-dark" />
-                {data.chip}
-              </span>
             </div>
 
             <ol>
