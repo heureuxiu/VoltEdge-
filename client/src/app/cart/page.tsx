@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
-import { CheckoutFlow } from "@/components/cart/CheckoutFlow";
+import { CartView } from "@/components/cart/CartView";
 import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
-  title: "Cart & checkout",
+  title: "Cart",
 };
 
 export default function CartPage() {
   return (
-    <Container className="pt-6">
-      <CheckoutFlow />
+    <Container className="mx-auto max-w-[1240px] pt-6">
+      <CartView />
     </Container>
   );
 }

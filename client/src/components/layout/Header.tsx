@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { ArrowUpRight, Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
+import { demoCart, type CartLine } from "@/data/cart";
 import { mainNav, routes } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -18,8 +20,17 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartLines, setCartLines] = useState<CartLine[]>(demoCart);
+  const cartCount = cartLines.reduce((sum, l) => sum + l.qty, 0);
   const pathname = usePathname();
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+
+  // Close the drawer and the mobile menu whenever the route changes.
+  useEffect(() => {
+    setCartOpen(false);
+    setMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -33,7 +44,7 @@ export function Header() {
       <Container>
         <div
           className={cn(
-            "flex items-center justify-between gap-4 rounded-full bg-ink/95 py-2 pl-5 pr-2 ring-1 backdrop-blur-xl transition-all duration-300",
+            "flex items-center justify-between gap-4 rounded-full bg-ink py-2 pl-5 pr-2 ring-1 transition-all duration-300",
             scrolled
               ? "ring-white/10 shadow-[0_18px_40px_-18px_rgb(17_17_17/0.6)]"
               : "ring-white/10 shadow-[0_8px_24px_-16px_rgb(17_17_17/0.4)]",
@@ -94,12 +105,21 @@ export function Header() {
             <button type="button" aria-label="Account" className={cn(iconButton, "hidden sm:grid")}>
               <User className="size-5" aria-hidden />
             </button>
-            <Link href={routes.cart} aria-label="Cart, 2 items" className={cn(iconButton, "relative")}>
+            <button
+              type="button"
+              aria-label={`Open cart, ${cartCount} items`}
+              aria-haspopup="dialog"
+              aria-expanded={cartOpen}
+              onClick={() => setCartOpen(true)}
+              className={cn(iconButton, "relative")}
+            >
               <ShoppingBag className="size-5" aria-hidden />
-              <span className="absolute right-1 top-1 grid size-[18px] place-items-center rounded-full bg-accent text-[10px] font-bold text-ink ring-2 ring-ink">
-                2
-              </span>
-            </Link>
+              {cartCount > 0 && (
+                <span className="absolute right-1 top-1 grid size-[18px] place-items-center rounded-full bg-accent text-[10px] font-bold text-ink ring-2 ring-ink">
+                  {cartCount}
+                </span>
+              )}
+            </button>
 
             <Link
               href={routes.bookRepair}
@@ -131,7 +151,7 @@ export function Header() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.98 }}
               transition={{ duration: 0.25, ease: [0.2, 0.7, 0.2, 1] }}
-              className="mt-2 overflow-hidden rounded-[28px] bg-white/95 p-3 ring-1 ring-black/10 shadow-[0_24px_48px_-24px_rgb(17_17_17/0.4)] backdrop-blur-xl lg:hidden"
+              className="mt-2 overflow-hidden rounded-[28px] bg-white p-3 ring-1 ring-black/10 shadow-[0_24px_48px_-24px_rgb(17_17_17/0.4)] lg:hidden"
             >
               <div className="flex flex-col gap-1">
                 {mainNav.map((link) => (
@@ -161,6 +181,15 @@ export function Header() {
           )}
         </AnimatePresence>
       </Container>
+      <CartDrawer
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        lines={cartLines}
+        onQty={(id, qty) =>
+          setCartLines((prev) => prev.map((l) => (l.product.id === id ? { ...l, qty: Math.min(9, Math.max(1, qty)) } : l)))
+        }
+        onRemove={(id) => setCartLines((prev) => prev.filter((l) => l.product.id !== id))}
+      />
     </header>
   );
 }

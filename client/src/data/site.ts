@@ -16,6 +16,13 @@ export const siteConfig = {
   mapsUrl: "/contact",
   copyrightYear: 2026,
   serviceAreas: ["[AREA 1]", "[AREA 2]", "[AREA 3]", "[AREA 4]"],
+  /** Replace the "#" links with your real profiles. */
+  socials: [
+    { name: "Instagram", icon: "/images/social/instagram.svg", href: "#" },
+    { name: "Facebook", icon: "/images/social/facebook.svg", href: "#" },
+    { name: "TikTok", icon: "/images/social/tiktok.svg", href: "#" },
+    { name: "X", icon: "/images/social/x.svg", href: "#" },
+  ],
 } as const;
 
 /** Central list of app routes so links never drift out of sync. */
@@ -24,6 +31,7 @@ export const routes = {
   shop: "/shop",
   product: (slug: string) => `/shop/${slug}`,
   cart: "/cart",
+  checkout: "/checkout",
   repairs: "/repairs",
   bookRepair: "/repairs/book",
   tradeIn: "/trade-in",
