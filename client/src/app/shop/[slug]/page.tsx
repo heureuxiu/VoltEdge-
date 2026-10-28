@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductDetail } from "@/components/shop/ProductDetail";
-import { ProductTabs } from "@/components/shop/ProductTabs";
+import { ProductBento } from "@/components/shop/ProductBento";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Breadcrumbs } from "@/components/ui/PageHero";
 import { getProduct, getRelatedProducts, products } from "@/data/products";
 import { routes } from "@/data/site";
@@ -28,7 +29,7 @@ export default async function ProductPage({ params }: PageProps<"/shop/[slug]">)
   const related = getRelatedProducts(slug);
 
   return (
-    <Container className="pt-5">
+    <Container className="mx-auto max-w-[1240px] pt-5">
       <div className="mb-4">
         <Breadcrumbs
           tone="light"
@@ -40,24 +41,26 @@ export default async function ProductPage({ params }: PageProps<"/shop/[slug]">)
         />
       </div>
 
-      <ProductDetail product={product} />
-      <ProductTabs product={product} />
+      <ProductDetail product={product}>
+        <ProductBento product={product} />
 
-      <section className="mt-[72px]" aria-labelledby="related-title">
-        <div className="mb-6 flex items-end justify-between gap-4">
-          <h2 id="related-title" className="text-[clamp(1.75rem,3.4vw,2.5rem)] font-bold">
-            You may also like
-          </h2>
-          <Link href={routes.shop} className="font-semibold hover:text-brand">
-            View all →
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {related.map((item) => (
-            <ProductCard key={item.id} product={item} />
-          ))}
-        </div>
-      </section>
+        <section className="mt-12" aria-labelledby="related-title">
+          <SectionHeading
+            eyebrow="More to love"
+            title={<span id="related-title">You may also like</span>}
+            action={
+              <Link href={routes.shop} className="text-[15px] font-semibold hover:text-brand">
+                View all →
+              </Link>
+            }
+          />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {related.map((item) => (
+              <ProductCard key={item.id} product={item} />
+            ))}
+          </div>
+        </section>
+      </ProductDetail>
     </Container>
   );
 }
