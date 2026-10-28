@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { PaperPlaneTilt } from "@phosphor-icons/react";
 
 import { ChoiceButton } from "@/components/ui/ChoiceButton";
 import { Field, TextAreaField } from "@/components/ui/Field";
@@ -40,7 +41,7 @@ export function ContactForm() {
               Message sent!
             </h2>
             <p className="text-base text-muted">Thanks — we&apos;ll get back to you shortly.</p>
-            <button type="button" onClick={() => setSent(false)} className="min-h-11 font-semibold text-brand">
+            <button type="button" onClick={() => setSent(false)} className="min-h-11 font-semibold underline underline-offset-4">
               Send another
             </button>
           </motion.div>
@@ -74,9 +75,12 @@ export function ContactForm() {
             <TextAreaField label="Message" rows={5} required placeholder={topics[topic].placeholder} />
             <button
               type="submit"
-              className="min-h-14 self-start rounded-[14px] bg-brand px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="group inline-flex min-h-14 items-center gap-3 self-start rounded-full bg-ink pl-7 pr-2 text-base font-semibold text-white transition-colors hover:bg-[#333333]"
             >
               Send message
+              <span className="grid size-10 place-items-center rounded-full bg-accent text-ink transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                <PaperPlaneTilt className="size-5" weight="fill" aria-hidden />
+              </span>
             </button>
           </motion.form>
         )}
