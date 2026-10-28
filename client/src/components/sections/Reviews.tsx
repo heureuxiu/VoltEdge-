@@ -65,12 +65,14 @@ export function Reviews() {
         <Marquee
           items={reviewTopics}
           duration={60}
+          fade={false}
           className="py-3 -my-3"
           renderItem={(review, index) => <ReviewCard review={review} variant={index} />}
         />
         <Marquee
           items={secondRow}
           duration={70}
+          fade={false}
           className="py-3 -my-3"
           reverse
           renderItem={(review, index) => <ReviewCard review={review} variant={index + 1} />}

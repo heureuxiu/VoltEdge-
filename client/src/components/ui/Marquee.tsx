@@ -32,7 +32,7 @@ export function Marquee<T>({
   return (
     <div className={cn("overflow-hidden", fade && "mask-fade-x", className)}>
       <div
-        className={cn("flex w-max animate-marquee pause-on-hover", trackClassName)}
+        className={cn("flex w-max animate-marquee pause-on-hover will-change-transform", trackClassName)}
         style={{ animationDuration: `${duration}s`, animationDirection: reverse ? "reverse" : "normal" }}
       >
         {loop.map((item, index) => (

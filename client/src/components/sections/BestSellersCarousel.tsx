@@ -92,7 +92,7 @@ export function BestSellersCarousel() {
           type="button"
           aria-label="Previous product"
           onClick={() => go(active - 1)}
-          className="absolute left-3 top-1/2 z-40 grid size-[52px] -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-md backdrop-blur-md transition-transform hover:-translate-y-[calc(50%+2px)] sm:left-[6vw] xl:left-24"
+          className="absolute left-3 top-1/2 z-40 grid size-[52px] -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-md transition-transform hover:-translate-y-[calc(50%+2px)] sm:left-[6vw] xl:left-24"
         >
           <ChevronLeft className="size-5" aria-hidden />
         </button>
@@ -161,7 +161,7 @@ function CoverflowCard({ product, offset, onSelect }: CoverflowCardProps) {
       transition={spring}
       style={{ zIndex: 20 - depth, pointerEvents: visible ? "auto" : "none" }}
       className={cn(
-        "absolute left-1/2 top-6 -ml-[140px] flex w-[280px] origin-[50%_60%] flex-col overflow-hidden rounded-[26px] border text-center backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-500",
+        "absolute left-1/2 top-6 -ml-[140px] flex w-[280px] origin-[50%_60%] flex-col overflow-hidden rounded-[26px] border text-center transition-[background-color,border-color,box-shadow] duration-500",
         isActive
           ? "border-[#ffc933] bg-[#fff4cc] shadow-[0_50px_100px_-40px_rgb(255_201_51/0.5),inset_0_1px_0_rgb(255_255_255/0.6)]"
           : "border-line bg-white shadow-[0_30px_60px_-30px_rgb(17_17_17/0.18)]",

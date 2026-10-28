@@ -37,7 +37,6 @@
   --animate-aurora-b: aurora-b 22s ease-in-out infinite;
   --animate-ring-out: ring-out 4.8s ease-out infinite;
   --animate-spark: spark 10s ease-in-out infinite;
-  --animate-pulse-dot: pulse-dot 1.6s ease-out infinite;
   --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 
   @keyframes fade-up {
@@ -73,10 +72,11 @@
     20% { opacity: 0.9; }
     100% { transform: translateY(-120px) scale(1.1); opacity: 0; }
   }
-  @keyframes pulse-dot {
-    0% { box-shadow: 0 0 0 0 rgb(255 201 51 / 0.6); }
-    100% { box-shadow: 0 0 0 12px rgb(255 201 51 / 0); }
-  }
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(2.8); opacity: 0; }
 }
 
 /* ------------------------------------------------------------------ */
@@ -87,6 +87,18 @@
     @apply bg-white text-ink font-sans antialiased;
   }
   .font-logo { font-stretch: 125%; }
+  /* Pulsing status dot: a ring that scales + fades (compositor-only, unlike animating box-shadow). */
+  .animate-pulse-dot {
+    position: relative;
+  }
+  .animate-pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: pulse-dot 1.6s ease-out infinite;
+  }
   h1, h2, h3 {
     @apply font-display tracking-tight;
   }
