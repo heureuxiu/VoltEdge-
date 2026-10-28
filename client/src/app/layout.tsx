@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Inter, Space_Grotesk } from "next/font/google";
 
+import { ChromeGate } from "@/components/layout/ChromeGate";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -46,11 +47,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${archivo.variable}`}>
       <body className="min-h-dvh">
         <SmoothScroll />
-        <AnnouncementBar />
-        <Header />
+        <ChromeGate>
+          <AnnouncementBar />
+          <Header />
+        </ChromeGate>
         <main id="top">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <ChromeGate>
+          <Footer />
+          <WhatsAppButton />
+        </ChromeGate>
       </body>
     </html>
   );
