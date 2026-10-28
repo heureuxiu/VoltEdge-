@@ -12,8 +12,8 @@ interface ChoiceButtonProps extends ComponentPropsWithoutRef<"button"> {
 }
 
 const shape: Record<Variant, string> = {
-  card: "rounded-[18px] border-2 p-4 text-left",
-  chip: "min-h-11 rounded-xl border px-4 text-sm font-semibold",
+  card: "rounded-[22px] border-2 p-4 text-left",
+  chip: "min-h-11 rounded-full border px-4 text-sm font-semibold",
   pill: "min-h-11 rounded-full border px-[18px] text-sm font-semibold",
 };
 
@@ -24,8 +24,8 @@ export function ChoiceButton({ selected, variant = "chip", onDark, className, ..
       ? "border-accent bg-accent text-ink"
       : "border-white/16 bg-white/6 text-white hover:bg-white/12"
     : selected
-      ? "border-brand bg-brand text-white"
-      : "border-line bg-white text-ink hover:border-[#d4d4d8]";
+      ? "border-ink bg-[#fff1b8] text-ink"
+      : "border-line bg-white text-ink hover:border-[#b8b8c0]";
 
   return (
     <button

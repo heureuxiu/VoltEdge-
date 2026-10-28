@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { ChoiceButton } from "@/components/ui/ChoiceButton";
@@ -36,7 +36,6 @@ export function BookingWizard() {
   const [days] = useState(upcomingDays);
 
   const done = step >= STEP_NAMES.length;
-  const progress = Math.round((Math.min(step, 4) / 4) * 100);
   const toggleIssue = (issue: string) =>
     setIssues((prev) => (prev.includes(issue) ? prev.filter((i) => i !== issue) : [...prev, issue]));
 
@@ -46,26 +45,46 @@ export function BookingWizard() {
 
   return (
     <>
-      <div className="mb-2.5">
-        <Breadcrumbs tone="light" items={[{ label: "Home", href: routes.home }, { label: "Repairs", href: routes.repairs }, { label: "Book a repair" }]} />
-      </div>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-5">
-        <h1 className="text-[clamp(2.125rem,4vw,3.25rem)] font-bold leading-none">Book a repair</h1>
-        <div className="max-w-[520px] flex-[1_1_320px]">
-          <div className="mb-2 flex justify-between text-[13px] font-semibold">
-            <span>
-              Step {Math.min(step + 1, 4)} of 4 · {done ? "Done" : STEP_NAMES[step]}
-            </span>
-            <span className="text-muted">{progress}%</span>
+      <section className="relative mb-6 overflow-hidden rounded-panel bg-[#e4ebff] px-6 py-8 text-ink ring-1 ring-[#d3defc] sm:px-12 sm:py-10">
+        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-8">
+          <div className="flex flex-col gap-4">
+            <Breadcrumbs tone="light" items={[{ label: "Home", href: routes.home }, { label: "Repairs", href: routes.repairs }, { label: "Book a repair" }]} />
+            <h1 className="text-[clamp(2.125rem,4.4vw,3.5rem)] font-bold leading-none">
+              Book a <span className="text-hero">repair</span>
+            </h1>
+            <p className="max-w-[420px] text-[17px] leading-relaxed text-ink/65">Four quick steps. Free diagnosis, and you only pay after the repair.</p>
           </div>
-          <div role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} className="h-2 overflow-hidden rounded bg-line">
-            <motion.div className="h-full rounded bg-brand" animate={{ width: `${Math.max(progress, 6)}%` }} transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }} />
-          </div>
+
+          <ol className="flex w-full max-w-[560px] flex-[1_1_360px] items-start" aria-label="Booking progress">
+            {STEP_NAMES.map((name, index) => {
+              const complete = index < step || done;
+              const current = index === step && !done;
+              return (
+                <li key={name} className="relative flex flex-1 flex-col items-center gap-2 text-center">
+                  {index > 0 && (
+                    <span aria-hidden className="absolute right-1/2 top-[19px] h-0.5 w-full bg-white">
+                      <motion.span className="block h-full bg-ink" initial={false} animate={{ width: complete || current ? "100%" : "0%" }} transition={{ duration: 0.4 }} />
+                    </span>
+                  )}
+                  <span
+                    aria-current={current ? "step" : undefined}
+                    className={cn(
+                      "relative z-10 grid size-10 place-items-center rounded-full text-sm font-bold transition-colors duration-300",
+                      complete ? "bg-ink text-white" : current ? "bg-accent text-ink ring-4 ring-white" : "bg-white text-muted",
+                    )}
+                  >
+                    {complete ? <Check className="size-4" strokeWidth={3} aria-hidden /> : index + 1}
+                  </span>
+                  <span className={cn("text-xs font-semibold", current || complete ? "text-ink" : "text-muted")}>{name}</span>
+                </li>
+              );
+            })}
+          </ol>
         </div>
-      </div>
+      </section>
 
       <div className="flex flex-wrap items-start gap-6">
-        <section className="flex min-w-0 flex-[999_1_560px] flex-col gap-6 rounded-panel bg-white p-6 ring-1 ring-line sm:p-11">
+        <section className="flex min-w-0 flex-[999_1_560px] flex-col gap-6 rounded-panel bg-white p-6 ring-1 ring-line sm:p-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -79,7 +98,7 @@ export function BookingWizard() {
                 <>
                   <StepTitle title="Which device?" subtitle="Pick the type, then the model." />
                   <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3">
-                    {bookingDevices.map(({ icon: Icon, label }, index) => (
+                    {bookingDevices.map(({ label }, index) => (
                       <ChoiceButton
                         key={label}
                         variant="card"
@@ -88,9 +107,8 @@ export function BookingWizard() {
                           setDevice(index);
                           setModel(0);
                         }}
-                        className="flex min-h-[120px] flex-col justify-between gap-3.5"
+                        className="flex min-h-[84px] items-center"
                       >
-                        <Icon className="size-[26px]" strokeWidth={1.8} aria-hidden />
                         <b className="text-[15px]">{label}</b>
                       </ChoiceButton>
                     ))}
@@ -115,8 +133,8 @@ export function BookingWizard() {
                     {bookingIssues.map((issue) => {
                       const on = issues.includes(issue);
                       return (
-                        <ChoiceButton key={issue} variant="card" selected={on} onClick={() => toggleIssue(issue)} className="flex min-h-[72px] items-center gap-3">
-                          <span className={cn("grid size-6 shrink-0 place-items-center rounded-[7px]", on ? "bg-accent text-ink" : "bg-surface text-transparent")}>
+                        <ChoiceButton key={issue} variant="card" selected={on} onClick={() => toggleIssue(issue)} className="flex min-h-[76px] items-center gap-3.5">
+                          <span className={cn("grid size-6 shrink-0 place-items-center rounded-[7px]", on ? "bg-ink text-white" : "bg-surface text-transparent ring-1 ring-line")}>
                             <Check className="size-3.5" strokeWidth={3} aria-hidden />
                           </span>
                           <span>
@@ -195,44 +213,50 @@ export function BookingWizard() {
           </AnimatePresence>
 
           {!done && (
-            <div className="flex justify-between gap-3 border-t border-line pt-5">
+            <div className="flex items-center justify-between gap-3 border-t border-line pt-6">
               <button
                 type="button"
                 disabled={step === 0}
                 onClick={() => setStep((s) => s - 1)}
-                className="min-h-[54px] rounded-[14px] bg-surface px-5 font-semibold disabled:opacity-40"
+                className="inline-flex min-h-[54px] items-center gap-2 rounded-full px-5 font-semibold transition-colors hover:bg-surface disabled:pointer-events-none disabled:opacity-35"
               >
-                ← Back
+                <ArrowLeft className="size-[18px]" aria-hidden /> Back
               </button>
               <button
                 type="button"
                 onClick={() => setStep((s) => s + 1)}
-                className="min-h-[54px] rounded-[14px] bg-ink px-7 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+                className="group inline-flex min-h-[56px] items-center gap-3 rounded-full bg-ink pl-7 pr-2 text-base font-semibold text-white transition-colors hover:bg-[#333333]"
               >
                 {step === 3 ? "Confirm booking" : "Continue"}
+                <span className="grid size-10 place-items-center rounded-full bg-accent text-ink transition-transform duration-300 group-hover:translate-x-0.5">
+                  {step === 3 ? <Check className="size-5" strokeWidth={2.6} aria-hidden /> : <ArrowRight className="size-5" strokeWidth={2.4} aria-hidden />}
+                </span>
               </button>
             </div>
           )}
         </section>
 
-        <aside aria-label="Booking summary" className="surface-glow relative flex min-w-0 flex-[1_1_320px] flex-col gap-[18px] overflow-hidden rounded-panel p-8 text-ink ring-1 ring-line">
-          <div aria-hidden className="absolute -right-36 -top-36 size-[360px] animate-spin-slow rounded-full border border-dashed border-brand/10" />
-          <div aria-hidden className="absolute bottom-0 left-0 size-48 rounded-full bg-white opacity-[0.22] blur-[80px]" />
-          <b className="relative font-display text-[22px]">Your booking</b>
-          <dl className="relative flex flex-col gap-3.5 text-[15px]">
+        <aside
+          aria-label="Booking summary"
+          className="relative flex min-w-0 flex-[1_1_320px] flex-col gap-5 rounded-panel bg-[#fff1b8] p-8 text-ink ring-1 ring-[#f3dd8a] lg:sticky lg:top-28"
+        >
+          <b className="font-display text-[22px]">Your booking</b>
+          <dl className="flex flex-col gap-3.5 text-[15px]">
             <SummaryRow label="Device" value={deviceLabel} />
             <SummaryRow label="Issues" value={issueLabel} />
             <SummaryRow label="Method" value={bookingMethods[method].label} />
             <SummaryRow label="When" value={whenLabel} />
           </dl>
-          <div className="relative flex items-baseline justify-between border-t border-line pt-4">
-            <span className="text-muted">Estimated from</span>
-            <b className="font-display text-[28px] text-brand">R [EST]</b>
+          <div className="flex items-baseline justify-between border-t border-[#f3dd8a] pt-4">
+            <span className="text-ink/65">Estimated from</span>
+            <b className="font-display text-[28px]">R [EST]</b>
           </div>
-          <ul className="relative flex flex-col gap-2.5 text-sm text-muted">
+          <ul className="flex flex-col gap-3 rounded-2xl bg-white/70 p-4 text-sm">
             {["Free diagnosis & quote first", "90-day warranty on parts & labour", "Pay after the repair"].map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-accent" />
+              <li key={item} className="flex items-center gap-2.5">
+                <span className="grid size-5 shrink-0 place-items-center rounded-full bg-ink text-white">
+                  <Check className="size-3" strokeWidth={3} aria-hidden />
+                </span>
                 {item}
               </li>
             ))}
@@ -246,8 +270,8 @@ export function BookingWizard() {
 function StepTitle({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div>
-      <h2 className="text-[28px] font-bold">{title}</h2>
-      <p className="mt-1.5 text-muted">{subtitle}</p>
+      <h2 className="font-display text-[clamp(1.75rem,3vw,2.25rem)] font-bold leading-tight">{title}</h2>
+      <p className="mt-1.5 text-[17px] text-muted">{subtitle}</p>
     </div>
   );
 }
@@ -255,7 +279,7 @@ function StepTitle({ title, subtitle }: { title: string; subtitle: string }) {
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3">
-      <dt className="text-muted">{label}</dt>
+      <dt className="text-ink/65">{label}</dt>
       <dd className="text-right font-semibold">{value}</dd>
     </div>
   );

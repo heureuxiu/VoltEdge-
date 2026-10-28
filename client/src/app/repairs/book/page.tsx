@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function BookRepairPage() {
   return (
-    <Container className="pt-6">
+    <Container className="mx-auto max-w-[1240px] pt-6">
       {/* The wizard reads today's date for the slot picker, so it renders per request. */}
       <Suspense fallback={<div className="h-[720px] animate-pulse rounded-panel bg-white ring-1 ring-line" />}>
         <BookingWizard />
