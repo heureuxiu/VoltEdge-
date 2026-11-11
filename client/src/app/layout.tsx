@@ -7,6 +7,9 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { CartProvider } from "@/context/CartContext";
+import { CatalogProvider } from "@/context/CatalogContext";
+import { fetchCatalog } from "@/lib/catalog.server";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
@@ -42,20 +45,25 @@ export const viewport: Viewport = {
   themeColor: "#111111",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const catalog = await fetchCatalog();
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${archivo.variable}`}>
       <body className="min-h-dvh">
-        <SmoothScroll />
-        <ChromeGate>
-          <AnnouncementBar />
-          <Header />
-        </ChromeGate>
-        <main id="top">{children}</main>
-        <ChromeGate>
-          <Footer />
-          <WhatsAppButton />
-        </ChromeGate>
+        <CatalogProvider catalog={catalog}>
+          <CartProvider>
+            <SmoothScroll />
+            <ChromeGate>
+              <AnnouncementBar />
+              <Header />
+            </ChromeGate>
+            <main id="top">{children}</main>
+            <ChromeGate>
+              <Footer />
+              <WhatsAppButton />
+            </ChromeGate>
+          </CartProvider>
+        </CatalogProvider>
       </body>
     </html>
   );

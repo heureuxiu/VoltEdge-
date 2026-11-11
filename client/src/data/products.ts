@@ -1,5 +1,6 @@
 import type { Product, ProductCategory, ProductType } from "@/types";
 
+/** Offline sample catalogue. Live products and prices come from the API (see lib/catalog.ts). */
 const PRICE = "R [PRICE]";
 const WAS = "R [WAS]";
 
@@ -15,6 +16,8 @@ export const products: Product[] = [
     image: "/images/products/iphone-17-pro-max.webp",
     tint: "bg-brand-soft",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
     compareAtPrice: WAS,
   },
   {
@@ -28,6 +31,8 @@ export const products: Product[] = [
     image: "/images/products/iphone-17.webp",
     tint: "bg-[#f4f4f5]",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
   },
   {
     id: "iphone-15-pro",
@@ -40,6 +45,8 @@ export const products: Product[] = [
     image: "/images/products/iphone-15-pro.webp",
     tint: "bg-repair-soft",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
     compareAtPrice: WAS,
   },
   {
@@ -53,6 +60,8 @@ export const products: Product[] = [
     image: "/images/products/galaxy-s25-ultra.webp",
     tint: "bg-[#f4f4f5]",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
     compareAtPrice: WAS,
   },
   {
@@ -66,6 +75,8 @@ export const products: Product[] = [
     image: "/images/products/galaxy-s25.webp",
     tint: "bg-[#f4f4f5]",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
   },
   {
     id: "galaxy-a36",
@@ -78,6 +89,8 @@ export const products: Product[] = [
     image: "/images/products/galaxy-a36.webp",
     tint: "bg-accent-soft",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
   },
   {
     id: "airpods-pro-3",
@@ -90,6 +103,8 @@ export const products: Product[] = [
     image: "/images/products/airpods-pro-3.webp",
     tint: "bg-[#f1f1f3]",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
   },
   {
     id: "macbook-air",
@@ -102,6 +117,8 @@ export const products: Product[] = [
     image: "/images/products/macbook-air.webp",
     tint: "bg-brand-soft",
     price: PRICE,
+    priceValue: 0,
+    stock: 0,
     compareAtPrice: WAS,
   },
 ];
@@ -125,9 +142,6 @@ export const bestSellerIds = [
   "macbook-air",
 ];
 
-export const bestSellers: Product[] = bestSellerIds
-  .map((id) => products.find((p) => p.id === id))
-  .filter((p): p is Product => Boolean(p));
 
 export const productTypes: { label: string; value: ProductType | "all" }[] = [
   { label: "All products", value: "all" },
@@ -135,18 +149,6 @@ export const productTypes: { label: string; value: ProductType | "all" }[] = [
   { label: "Laptops", value: "laptop" },
   { label: "Audio", value: "audio" },
 ];
-
-export function getProduct(slug: string) {
-  return products.find((p) => p.id === slug);
-}
-
-export function getRelatedProducts(slug: string, limit = 4) {
-  const current = getProduct(slug);
-  return products
-    .filter((p) => p.id !== slug)
-    .sort((a, b) => Number(b.type === current?.type) - Number(a.type === current?.type))
-    .slice(0, limit);
-}
 
 /** Colour swatches shown on the product page. Swap for real variants per product. */
 export const productColors: Record<string, { name: string; hex: string; glow: string }[]> = {

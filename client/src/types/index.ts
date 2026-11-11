@@ -15,9 +15,14 @@ export interface Product {
   image: string;
   /** Tint behind the product photo on cards. */
   tint: string;
-  /** Prices are placeholders until real pricing is supplied. */
+  /** Formatted for display, e.g. "R34 999". */
   price: string;
+  /** Numeric price in rand (0 for the offline sample catalogue). */
+  priceValue: number;
   compareAtPrice?: string;
+  compareAtValue?: number;
+  /** Units in stock. */
+  stock: number;
 }
 
 export interface NavLink {
