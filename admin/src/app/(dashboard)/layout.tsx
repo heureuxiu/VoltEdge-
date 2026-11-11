@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
 
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminShell } from "@/components/layout/AdminShell";
+
+/**
+ * The shell shows a splash screen until the saved admin session is read in the browser, so pages
+ * under it can't be validated for instant navigation. Opt this segment out of that check.
+ */
+export const instant = false;
 
 export default function AdminDashboardLayout({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex min-h-dvh w-full bg-surface font-sans text-ink">
-      <AdminSidebar />
-      <main className="min-w-0 flex-1 px-8 py-7 pb-12">
-        <div className="mx-auto flex max-w-[1240px] flex-col gap-5">{children}</div>
-      </main>
-    </div>
-  );
+  return <AdminShell>{children}</AdminShell>;
 }
