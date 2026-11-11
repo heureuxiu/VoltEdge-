@@ -1,55 +1,191 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------ */
-/*  Design tokens — mirrors the VoltEdge storefront palette so the      */
-/*  admin panel stays visually consistent with the client app.         */
-/* ------------------------------------------------------------------ */
-@theme {
-  --color-ink: #111111;
-  --color-ink-800: #1b1b1b;
-  --color-ink-700: #2b2b2b;
-  --color-surface: #f4f4f5;
-  --color-line: #e4e4e7;
-  --color-muted: #6b6b73;
-  --color-muted-dark: #a1a1aa;
-  --color-accent: #ffc933;
-  --color-accent-soft: #fef4cc;
-  --color-accent-dark: #8a6100;
-  --color-brand: #111111;
-  --color-hero: #2347ff;
-  --color-hero-soft: #e8eeff;
-  --color-brand-soft: #f1f1f3;
-  --color-repair: #e5484d;
-  --color-repair-soft: #ffe9ea;
+@custom-variant dark (&:where(.dark, .dark *));
 
+/* ------------------------------------------------------------------ */
+/*  Design tokens — VoltEdge palette (black / yellow / blue) applied to */
+/*  the MSCL dashboard system: floating rail, rounded cards, light+dark */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #f1f1f3;
+  --surface: #ffffff;
+  --surface-2: #f7f7f8;
+  --ink: #111111;
+  --ink-2: #3f3f46;
+  --muted: #71717a;
+  --line: #e4e4e7;
+  --line-2: #efeff1;
+
+  --accent: #ffc933;
+  --accent-ink: #111111;
+  --accent-soft: #fef4cc;
+  --accent-text: #8a6100;
+
+  --hero: #2347ff;
+  --hero-soft: #e8eeff;
+  --danger: #e5484d;
+  --danger-soft: #ffe9ea;
+  --ok: #15803d;
+  --ok-soft: #dcfce7;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+
+  --c1: #111111;
+  --c2: #ffc933;
+  --c3: #2347ff;
+  --c4: #e5484d;
+  --c5: #9a9aa3;
+
+  --rail: #111111;
+  --rail-ink: #e7e7ea;
+  --rail-mut: #8d8d96;
+  --rail-line: #26262a;
+  --rail-act: #2a2a2f;
+  --rail-hi: #ffffff;
+  --rail-soft: #1b1b1e;
+
+  --elev: 0 1px 0 rgb(17 17 17 / 0.03), 0 14px 34px -20px rgb(17 17 17 / 0.28);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #09090b;
+  --surface: #131316;
+  --surface-2: #0e0e10;
+  --ink: #f4f4f5;
+  --ink-2: #c4c4cc;
+  --muted: #8d8d96;
+  --line: #26262a;
+  --line-2: #1c1c1f;
+
+  --accent: #ffc933;
+  --accent-ink: #111111;
+  --accent-soft: #2e2610;
+  --accent-text: #ffd466;
+
+  --hero: #7b93ff;
+  --hero-soft: #161d3d;
+  --danger: #ff6b70;
+  --danger-soft: #3a1618;
+  --ok: #4ade80;
+  --ok-soft: #10281a;
+  --warn: #fbbf24;
+  --warn-soft: #33260a;
+
+  --c1: #f4f4f5;
+  --c2: #ffc933;
+  --c3: #7b93ff;
+  --c4: #ff6b70;
+  --c5: #8d8d96;
+
+  --rail: #0e0e10;
+  --rail-line: #1f1f23;
+  --rail-act: #24242a;
+  --rail-soft: #17171a;
+
+  --elev: 0 1px 0 rgb(255 255 255 / 0.02), 0 14px 34px -20px rgb(0 0 0 / 0.75);
+  color-scheme: dark;
+}
+
+@theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
   --font-logo: var(--font-archivo), var(--font-inter), sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --radius-card: 1.5rem;
-  --radius-panel: 2rem;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-hero: var(--hero);
+  --color-hero-soft: var(--hero-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-c1: var(--c1);
+  --color-c2: var(--c2);
+  --color-c3: var(--c3);
+  --color-c4: var(--c4);
+  --color-c5: var(--c5);
+  --color-rail: var(--rail);
+  --color-rail-ink: var(--rail-ink);
+  --color-rail-mut: var(--rail-mut);
+  --color-rail-line: var(--rail-line);
+  --color-rail-act: var(--rail-act);
+  --color-rail-hi: var(--rail-hi);
+  --color-rail-soft: var(--rail-soft);
+
+  --shadow-card: var(--elev);
+  --radius-card: 1.25rem;
 }
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-white text-ink font-sans antialiased;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
-  .font-logo { font-stretch: 125%; }
-  h1, h2, h3 {
-    @apply font-display tracking-tight;
+  button {
+    cursor: pointer;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
   ::selection {
-    @apply bg-ink text-white;
+    background: var(--accent);
+    color: #111;
+  }
+  .font-logo {
+    font-stretch: 125%;
   }
 }
 
+@keyframes ve-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ve-pop {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes ve-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ve-bar {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.ve-rise { animation: ve-rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.ve-pop { animation: ve-pop 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.ve-fade { animation: ve-fade 0.2s ease both; }
+.ve-bar { transform-origin: bottom; animation: ve-bar 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
