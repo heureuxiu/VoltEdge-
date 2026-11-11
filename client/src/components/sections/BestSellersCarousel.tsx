@@ -6,7 +6,7 @@ import { motion, useReducedMotion, type PanInfo } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Container } from "@/components/ui/Container";
-import { bestSellers } from "@/data/products";
+import { useCatalog } from "@/context/CatalogContext";
 import { circularOffset, cn, wrapIndex } from "@/lib/utils";
 import type { Product } from "@/types";
 
@@ -21,6 +21,7 @@ const depthOpacity = [1, 0.92, 0.7, 0.4];
 const spring = { type: "spring", stiffness: 140, damping: 22, mass: 0.9 } as const;
 
 export function BestSellersCarousel() {
+  const { bestSellers } = useCatalog();
   const count = bestSellers.length;
   const [active, setActive] = useState(Math.floor(count / 2) - 1);
   const [paused, setPaused] = useState(false);

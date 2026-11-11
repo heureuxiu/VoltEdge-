@@ -10,11 +10,10 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ChoiceButton } from "@/components/ui/ChoiceButton";
 import { inputClassName } from "@/components/ui/Field";
 import { PageHero } from "@/components/ui/PageHero";
-import { products } from "@/data/products";
+import { useCatalog } from "@/context/CatalogContext";
 import { routes } from "@/data/site";
 
 
-const brandsInCatalog = Array.from(new Set(products.map((p) => p.brand)));
 const storageOptions = ["128GB", "256GB", "512GB", "1TB"];
 
 /** Floating product collage for the shop banner. */
@@ -56,12 +55,14 @@ function ShopBannerArt() {
 }
 
 export function ShopCatalog() {
+  const { products } = useCatalog();
+  const brandsInCatalog = useMemo(() => Array.from(new Set(products.map((p) => p.brand))), [products]);
   const [hiddenBrands, setHiddenBrands] = useState<string[]>([]);
   const [storage, setStorage] = useState("256GB");
 
   const results = useMemo(() => {
     return products.filter((p) => !hiddenBrands.includes(p.brand));
-  }, [hiddenBrands]);
+  }, [products, hiddenBrands]);
 
   const toggleBrand = (brand: string) =>
     setHiddenBrands((prev) => (prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]));

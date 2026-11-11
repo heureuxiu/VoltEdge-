@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
@@ -15,21 +16,26 @@ import {
   Storefront,
 } from "@phosphor-icons/react";
 
-import { ButtonLink } from "@/components/ui/ButtonLink";
 import { productColors, productConditions, productStorage } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 import { routes } from "@/data/site";
+import { formatZar } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 
 const views = ["Back", "Front", "Side", "Camera"];
 
-const perks = [
-  { icon: Storefront, label: "In stock · collect today" },
-  { icon: Package, label: "Delivery in [X] days" },
-  { icon: SealCheck, label: "Genuine & not blacklisted" },
-  { icon: ArrowsClockwise, label: "Trade-in accepted" },
-  { icon: CreditCard, label: "Pay in 3 · R [AMOUNT] each" },
-];
+function perksFor(product: Product) {
+  const priced = product.priceValue > 0;
+  const soldOut = priced && product.stock <= 0;
+  return [
+    { icon: Storefront, label: soldOut ? "Sold out · back soon" : product.stock > 0 && product.stock <= 5 ? `Only ${product.stock} left · collect today` : "In stock · collect today" },
+    { icon: Package, label: "Delivery in [X] days" },
+    { icon: SealCheck, label: "Genuine & not blacklisted" },
+    { icon: ArrowsClockwise, label: "Trade-in accepted" },
+    { icon: CreditCard, label: priced ? `Pay in 3 · ${formatZar(Math.ceil(product.priceValue / 3))} each` : "Pay in 3 with Payflex" },
+  ];
+}
 
 const callouts = [
   { icon: Cpu, label: "Flagship chip", className: "left-[15%] top-[60%]" },
@@ -65,6 +71,12 @@ export function ProductDetail({ product, children }: { product: Product; childre
   const [qty, setQty] = useState(1);
   const [liked, setLiked] = useState(false);
   const selected = colors[color];
+  const cart = useCart();
+  const router = useRouter();
+  const soldOut = product.priceValue > 0 && product.stock <= 0;
+  const saving = product.compareAtValue && product.compareAtValue > product.priceValue ? product.compareAtValue - product.priceValue : 0;
+  const perks = perksFor(product);
+  const variant = `${selected.name} · ${productStorage[storage]} · ${productConditions[condition].label}`;
 
   return (
     <div className="flex flex-col gap-4">
@@ -102,7 +114,7 @@ export function ProductDetail({ product, children }: { product: Product; childre
             <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
               <b className="font-display text-3xl">{product.price}</b>
               {product.compareAtPrice && <s className="text-sm text-ink/50">{product.compareAtPrice}</s>}
-              {product.compareAtPrice && <span className="rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-white">Save R [X]</span>}
+              {saving > 0 && <span className="rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-white">Save {formatZar(saving)}</span>}
             </span>
           </div>
           <button
@@ -265,7 +277,6 @@ export function ProductDetail({ product, children }: { product: Product; childre
                 )}
               >
                 <b className="block font-display text-lg">{s}</b>
-                <span className={cn("text-xs", storage === index ? "text-white/70" : "text-muted")}>+ R [X]</span>
               </button>
             ))}
           </div>
@@ -311,12 +322,25 @@ export function ProductDetail({ product, children }: { product: Product; childre
               <Plus className="size-4" aria-hidden />
             </button>
           </div>
-          <ButtonLink href={routes.cart} variant="light" className="min-h-12 rounded-full px-5 text-sm">
-            <ShoppingBag className="size-4" aria-hidden /> Add to cart
-          </ButtonLink>
-          <ButtonLink href={routes.cart} variant="accent" className="min-h-12 rounded-full bg-accent px-5 text-sm text-ink hover:bg-[#ffd24d]">
+          <button
+            type="button"
+            disabled={soldOut}
+            onClick={() => cart.add(product, { variant, qty })}
+            className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-white px-5 text-sm font-semibold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface disabled:pointer-events-none disabled:opacity-40"
+          >
+            <ShoppingBag className="size-4" aria-hidden /> {soldOut ? "Sold out" : "Add to cart"}
+          </button>
+          <button
+            type="button"
+            disabled={soldOut}
+            onClick={() => {
+              cart.add(product, { variant, qty, open: false });
+              router.push(routes.checkout);
+            }}
+            className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-accent px-5 text-sm font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#ffd24d] disabled:pointer-events-none disabled:opacity-40"
+          >
             Buy now
-          </ButtonLink>
+          </button>
         </div>
       </div>
     </div>

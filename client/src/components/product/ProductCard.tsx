@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { Heart, Plus } from "lucide-react";
 
+import { useCart } from "@/context/CartContext";
 import { routes } from "@/data/site";
+import { formatZar } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 
@@ -16,6 +18,9 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   const [liked, setLiked] = useState(false);
+  const cart = useCart();
+  const soldOut = product.stock <= 0 && product.priceValue > 0;
+  const handleAdd = onAddToCart ?? ((p: Product) => cart.add(p));
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(17_17_17/0.35)]">
@@ -55,13 +60,16 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <div className="mt-auto flex items-center justify-between pt-3.5">
           <span className="flex flex-col">
             <b className="font-display text-xl">{product.price}</b>
-            <span className="text-xs text-muted">or 3 × R [AMOUNT] with Payflex</span>
+            {product.priceValue > 0 && !soldOut ? (
+              <span className="text-xs text-muted">or 3 × {formatZar(Math.ceil(product.priceValue / 3))} with Payflex</span>
+            ) : null}
           </span>
           <button
             type="button"
-            aria-label={`Add ${product.name} to cart`}
-            onClick={() => onAddToCart?.(product)}
-            className="grid size-9 place-items-center rounded-full border-2 border-ink text-ink transition-all duration-200 hover:bg-ink hover:text-white active:scale-95"
+            aria-label={soldOut ? `${product.name} is sold out` : `Add ${product.name} to cart`}
+            disabled={soldOut}
+            onClick={() => handleAdd(product)}
+            className="grid size-9 disabled:pointer-events-none disabled:opacity-35 place-items-center rounded-full border-2 border-ink text-ink transition-all duration-200 hover:bg-ink hover:text-white active:scale-95"
           >
             <Plus className="size-4" strokeWidth={2.4} aria-hidden />
           </button>

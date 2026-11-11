@@ -7,7 +7,8 @@ import { Headphones, LayoutGrid, Smartphone, type LucideIcon } from "lucide-reac
 
 import { ProductCard } from "@/components/product/ProductCard";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { productFilters, products } from "@/data/products";
+import { useCatalog } from "@/context/CatalogContext";
+import { productFilters } from "@/data/products";
 import { cn } from "@/lib/utils";
 import type { ProductCategory } from "@/types";
 
@@ -22,11 +23,12 @@ const filterIcons: Partial<Record<Filter, LucideIcon | "apple">> = {
 };
 
 export function FeaturedProducts() {
+  const { products } = useCatalog();
   const [filter, setFilter] = useState<Filter>("all");
 
   const visible = useMemo(
     () => (filter === "all" ? products : products.filter((p) => p.category === filter)),
-    [filter],
+    [filter, products],
   );
 
   return (

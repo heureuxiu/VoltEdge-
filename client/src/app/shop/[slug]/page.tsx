@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 
 import { ProductCard } from "@/components/product/ProductCard";
@@ -8,25 +9,32 @@ import { ProductBento } from "@/components/shop/ProductBento";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Breadcrumbs } from "@/components/ui/PageHero";
-import { getProduct, getRelatedProducts, products } from "@/data/products";
 import { routes } from "@/data/site";
-
-export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.id }));
-}
+import { relatedProducts } from "@/lib/catalog";
+import { fetchCatalog } from "@/lib/catalog.server";
 
 export async function generateMetadata({ params }: PageProps<"/shop/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const { products } = await fetchCatalog();
+  const product = products.find((p) => p.id === slug);
   return product ? { title: product.name, description: `${product.name} — ${product.spec}. Pay in 3 with Payflex.` } : {};
 }
 
-export default async function ProductPage({ params }: PageProps<"/shop/[slug]">) {
+export default function ProductPage({ params }: PageProps<"/shop/[slug]">) {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>
+      <ProductPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function ProductPageContent({ params }: Pick<PageProps<"/shop/[slug]">, "params">) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const { products } = await fetchCatalog();
+  const product = products.find((p) => p.id === slug);
   if (!product) notFound();
 
-  const related = getRelatedProducts(slug);
+  const related = relatedProducts(products, slug);
 
   return (
     <Container className="mx-auto max-w-[1240px] pt-5">
