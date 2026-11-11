@@ -9,8 +9,11 @@ import { ChoiceButton } from "@/components/ui/ChoiceButton";
 import { Field, TextAreaField } from "@/components/ui/Field";
 import { Breadcrumbs } from "@/components/ui/PageHero";
 import { SuccessCheck } from "@/components/ui/SuccessCheck";
+import { useCatalog } from "@/context/CatalogContext";
 import { bookingDevices, bookingIssues, bookingMethods, bookingSlots } from "@/data/repairs";
 import { routes } from "@/data/site";
+import { api, errorMessage } from "@/lib/api";
+import { formatZar } from "@/lib/money";
 import { cn } from "@/lib/utils";
 
 const STEP_NAMES = ["Device", "Issue", "Date & time", "Your details"];
@@ -34,6 +37,15 @@ export function BookingWizard() {
   const [day, setDay] = useState(0);
   const [slot, setSlot] = useState(2);
   const [days] = useState(upcomingDays);
+  const { config } = useCatalog();
+  const [notes, setNotes] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [ref, setRef] = useState("");
 
   const done = step >= STEP_NAMES.length;
   const toggleIssue = (issue: string) =>
@@ -42,6 +54,36 @@ export function BookingWizard() {
   const deviceLabel = bookingDevices[device].models[model];
   const issueLabel = issues.length === 0 ? "None yet" : issues.length === 1 ? issues[0] : `${issues.length} selected`;
   const whenLabel = `${days[day].top} ${days[day].day} · ${bookingSlots[slot]}`;
+  const estimate = issues.reduce((sum, i) => sum + (config.repairPrices[i] ?? 0), 0);
+  const canConfirm = name.trim() !== "" && email.trim() !== "" && phone.trim() !== "" && agreed && !submitting;
+
+  async function confirm() {
+    if (!canConfirm) return;
+    setSubmitting(true);
+    setError("");
+    const modelName = bookingDevices[device].models[model];
+    try {
+      const res = await api<{ id: string }>("/store/repairs", {
+        method: "POST",
+        body: {
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          device: /^(other|xiaomi|huawei|oppo)/i.test(modelName) ? `${bookingDevices[device].label} · ${modelName}` : modelName,
+          issues: issues.length > 0 ? issues : ["Something else"],
+          method: bookingMethods[method].label,
+          when: whenLabel,
+          notes: notes.trim() || undefined,
+        },
+      });
+      setRef(res.id);
+      setStep(STEP_NAMES.length);
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <>
@@ -139,13 +181,13 @@ export function BookingWizard() {
                           </span>
                           <span>
                             <b className="block text-[15px]">{issue}</b>
-                            <span className="block text-xs opacity-70">From R [PRICE]</span>
+                            <span className="block text-xs opacity-70">{(config.repairPrices[issue] ?? 0) > 0 ? `From ${formatZar(config.repairPrices[issue]!)}` : "Free diagnosis"}</span>
                           </span>
                         </ChoiceButton>
                       );
                     })}
                   </div>
-                  <TextAreaField label="Anything else we should know? (optional)" rows={3} placeholder="e.g. dropped it yesterday, touch not working at the top" />
+                  <TextAreaField label="Anything else we should know? (optional)" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="e.g. dropped it yesterday, touch not working at the top" />
                 </>
               )}
 
@@ -182,14 +224,19 @@ export function BookingWizard() {
                 <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-4">
                   <StepTitle title="Your details" subtitle="We'll confirm your booking on WhatsApp." />
                   <div className="grid gap-3 md:grid-cols-2">
-                    <Field label="Full name" autoComplete="name" />
-                    <Field label="WhatsApp number" type="tel" autoComplete="tel" />
-                    <Field label="Email" type="email" autoComplete="email" wrapperClassName="md:col-span-2" />
+                    <Field label="Full name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
+                    <Field label="WhatsApp number" type="tel" autoComplete="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <Field label="Email" type="email" autoComplete="email" required wrapperClassName="md:col-span-2" value={email} onChange={(e) => setEmail(e.target.value)} />
                   </div>
                   <label className="flex items-start gap-2.5 text-sm leading-normal text-muted">
-                    <input type="checkbox" className="mt-0.5 size-[18px] accent-ink" />
+                    <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 size-[18px] accent-ink" />
                     I&apos;ve backed up my device and agree to the repair terms.
                   </label>
+                  {error ? (
+                    <p role="alert" className="rounded-xl bg-[#fee2e2] px-4 py-3 text-sm font-semibold text-[#b91c1c]">
+                      {error}
+                    </p>
+                  ) : null}
                 </form>
               )}
 
@@ -198,7 +245,7 @@ export function BookingWizard() {
                   <SuccessCheck />
                   <h2 className="text-[clamp(1.875rem,4vw,2.75rem)] font-bold">You&apos;re booked in!</h2>
                   <p className="max-w-[520px] text-[17px] leading-relaxed text-muted">
-                    Booking reference <b className="text-ink">RP-[REF]</b>. We&apos;ve sent the details to your WhatsApp — see you{" "}
+                    Booking reference <b className="text-ink">{ref}</b>. Keep it with your email address to track the repair — see you{" "}
                     {whenLabel}.
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -224,10 +271,11 @@ export function BookingWizard() {
               </button>
               <button
                 type="button"
-                onClick={() => setStep((s) => s + 1)}
-                className="group inline-flex min-h-[56px] items-center gap-3 rounded-full bg-ink pl-7 pr-2 text-base font-semibold text-white transition-colors hover:bg-[#333333]"
+                disabled={step === 3 && !canConfirm}
+                onClick={() => (step === 3 ? confirm() : setStep((s) => s + 1))}
+                className="group inline-flex min-h-[56px] disabled:pointer-events-none disabled:opacity-50 items-center gap-3 rounded-full bg-ink pl-7 pr-2 text-base font-semibold text-white transition-colors hover:bg-[#333333]"
               >
-                {step === 3 ? "Confirm booking" : "Continue"}
+                {step === 3 ? (submitting ? "Booking…" : "Confirm booking") : "Continue"}
                 <span className="grid size-10 place-items-center rounded-full bg-accent text-ink transition-transform duration-300 group-hover:translate-x-0.5">
                   {step === 3 ? <Check className="size-5" strokeWidth={2.6} aria-hidden /> : <ArrowRight className="size-5" strokeWidth={2.4} aria-hidden />}
                 </span>
@@ -249,7 +297,7 @@ export function BookingWizard() {
           </dl>
           <div className="flex items-baseline justify-between border-t border-[#f3dd8a] pt-4">
             <span className="text-ink/65">Estimated from</span>
-            <b className="font-display text-[28px]">R [EST]</b>
+            <b className="font-display text-[28px]">{estimate > 0 ? formatZar(estimate) : "After diagnosis"}</b>
           </div>
           <ul className="flex flex-col gap-3 rounded-2xl bg-white/70 p-4 text-sm">
             {["Free diagnosis & quote first", "90-day warranty on parts & labour", "Pay after the repair"].map((item) => (

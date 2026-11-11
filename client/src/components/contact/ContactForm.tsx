@@ -7,6 +7,7 @@ import { PaperPlaneTilt } from "@phosphor-icons/react";
 import { ChoiceButton } from "@/components/ui/ChoiceButton";
 import { Field, TextAreaField } from "@/components/ui/Field";
 import { SuccessCheck } from "@/components/ui/SuccessCheck";
+import { api, errorMessage } from "@/lib/api";
 
 const topics = [
   { label: "Buying a device", placeholder: "Which phone are you interested in?" },
@@ -19,11 +20,25 @@ const topics = [
 export function ContactForm() {
   const [topic, setTopic] = useState(0);
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // TODO: send to your inbox / CRM.
-    setSent(true);
+    const f = new FormData(event.currentTarget);
+    setBusy(true);
+    setError("");
+    try {
+      await api("/store/contact", {
+        method: "POST",
+        body: { topic: topics[topic].label, name: String(f.get("name") ?? ""), contact: String(f.get("contact") ?? ""), message: String(f.get("message") ?? "") },
+      });
+      setSent(true);
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -69,15 +84,21 @@ export function ContactForm() {
               </div>
             </fieldset>
             <div className="grid gap-3 md:grid-cols-2">
-              <Field label="Name" required autoComplete="name" />
-              <Field label="Phone or email" required />
+              <Field label="Name" name="name" required autoComplete="name" />
+              <Field label="Phone or email" name="contact" required />
             </div>
-            <TextAreaField label="Message" rows={5} required placeholder={topics[topic].placeholder} />
+            <TextAreaField label="Message" name="message" rows={5} required placeholder={topics[topic].placeholder} />
+            {error ? (
+              <p role="alert" className="rounded-xl bg-[#fee2e2] px-4 py-3 text-sm font-semibold text-[#b91c1c]">
+                {error}
+              </p>
+            ) : null}
             <button
               type="submit"
-              className="group inline-flex min-h-14 items-center gap-3 self-start rounded-full bg-ink pl-7 pr-2 text-base font-semibold text-white transition-colors hover:bg-[#333333]"
+              disabled={busy}
+              className="group inline-flex min-h-14 items-center gap-3 self-start rounded-full bg-ink pl-7 pr-2 text-base font-semibold text-white transition-colors hover:bg-[#333333] disabled:opacity-60"
             >
-              Send message
+              {busy ? "Sending…" : "Send message"}
               <span className="grid size-10 place-items-center rounded-full bg-accent text-ink transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                 <PaperPlaneTilt className="size-5" weight="fill" aria-hidden />
               </span>
