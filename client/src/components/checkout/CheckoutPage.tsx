@@ -2,14 +2,31 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useId, useState, type ComponentPropsWithoutRef, type ReactNode } from "react";
+import { useId, useState, type ComponentPropsWithoutRef, type FormEvent, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, ChevronDown, ChevronRight, Lock, ShoppingBag } from "lucide-react";
 
 import { Logo } from "@/components/ui/Logo";
-import { demoCart } from "@/data/cart";
+import { useCart } from "@/context/CartContext";
+import { useCatalog } from "@/context/CatalogContext";
+import type { CartLine } from "@/data/cart";
 import { routes, siteConfig } from "@/data/site";
+import { api, errorMessage } from "@/lib/api";
+import { formatZar } from "@/lib/money";
 import { cn } from "@/lib/utils";
+
+interface OrderResult {
+  id: string;
+  total: number;
+  email: string;
+  payment: "card" | "payflex" | "eft";
+  delivery: "ship" | "pickup";
+  shippingMethod: "standard" | "express" | "pickup";
+}
+
+const PAYMENT_KEYS = ["card", "payflex", "eft"] as const;
+const PAYMENT_LABEL = { card: "Card", payflex: "Payflex", eft: "Instant EFT" } as const;
+
 
 /* ------------------------------------------------------------------ */
 /*  Small form primitives (floating-label inputs, radio rows)           */
@@ -112,12 +129,20 @@ function Section({ title, aside, children }: { title: string; aside?: ReactNode;
 /*  Order summary                                                       */
 /* ------------------------------------------------------------------ */
 
-function Summary() {
+interface SummaryProps {
+  lines: CartLine[];
+  subtotal: number;
+  shippingFee: number;
+  pickup: boolean;
+  total: number;
+}
+
+function Summary({ lines, subtotal, shippingFee, pickup, total }: SummaryProps) {
   const [code, setCode] = useState("");
   return (
     <div className="flex flex-col gap-5">
       <ul className="flex flex-col gap-4">
-        {demoCart.map(({ product, variant, qty }) => (
+        {lines.map(({ product, variant, qty }) => (
           <li key={product.id} className="flex items-center gap-4">
             <span className="relative grid size-16 shrink-0 place-items-center rounded-xl border border-[#e4e4e7] bg-white">
               <Image src={product.image} alt="" width={48} height={60} className="h-11 w-auto" />
@@ -127,7 +152,7 @@ function Summary() {
               <b className="block truncate text-sm">{product.name}</b>
               <span className="block truncate text-xs text-muted">{variant}</span>
             </span>
-            <b className="text-sm">{product.price}</b>
+            <b className="text-sm">{formatZar(product.priceValue * qty)}</b>
           </li>
         ))}
       </ul>
@@ -158,17 +183,17 @@ function Summary() {
       <dl className="flex flex-col gap-3 text-[15px]">
         <div className="flex justify-between">
           <dt className="text-muted">Subtotal</dt>
-          <dd className="font-semibold">R [SUBTOTAL]</dd>
+          <dd className="font-semibold">{formatZar(subtotal)}</dd>
         </div>
         <div className="flex justify-between">
           <dt className="text-muted">Shipping</dt>
-          <dd className="text-muted">Enter shipping address</dd>
+          <dd className={pickup ? "text-muted" : "font-semibold"}>{pickup ? "Free (pick up)" : formatZar(shippingFee)}</dd>
         </div>
         <div className="flex items-baseline justify-between pt-1">
           <dt className="text-lg font-semibold">Total</dt>
           <dd>
             <span className="mr-2 text-xs text-muted">ZAR</span>
-            <b className="font-display text-2xl">R [TOTAL]</b>
+            <b className="font-display text-2xl">{formatZar(total)}</b>
           </dd>
         </div>
       </dl>
@@ -186,9 +211,67 @@ export function CheckoutPage() {
   const [shipping, setShipping] = useState(0);
   const [payment, setPayment] = useState(0);
   const [billing, setBilling] = useState(0);
-  const [placed, setPlaced] = useState(false);
+  const [placed, setPlaced] = useState<OrderResult | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const { lines, subtotal, ready, clear } = useCart();
+  const { config } = useCatalog();
 
-  if (placed) return <Confirmation />;
+  const pickup = delivery === "pickup";
+  const shippingFee = pickup ? 0 : shipping === 0 ? config.shipping.standard : config.shipping.express;
+  const total = subtotal + shippingFee;
+  const summary = <Summary lines={lines} subtotal={subtotal} shippingFee={shippingFee} pickup={pickup} total={total} />;
+
+  async function placeOrder(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (lines.length === 0 || submitting) return;
+    const f = new FormData(event.currentTarget);
+    const text = (name: string) => String(f.get(name) ?? "").trim();
+    setSubmitting(true);
+    setError("");
+    try {
+      const order = await api<OrderResult>("/store/orders", {
+        method: "POST",
+        body: {
+          items: lines.map((l) => ({ productId: l.product.id, qty: l.qty, variant: l.variant })),
+          contact: { email: text("email"), phone: text("phone"), firstName: text("firstName"), lastName: text("lastName") },
+          delivery,
+          shippingMethod: shipping === 0 ? "standard" : "express",
+          address: pickup
+            ? undefined
+            : { line1: text("address"), line2: text("address2") || undefined, city: text("city"), province: text("province") || undefined, postal: text("postal"), country: text("country") || "ZA" },
+          payment: PAYMENT_KEYS[payment],
+        },
+      });
+      clear();
+      setPlaced(order);
+      window.scrollTo({ top: 0 });
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (placed) return <Confirmation order={placed} />;
+
+  if (ready && lines.length === 0) {
+    return (
+      <div className="grid min-h-dvh place-items-center bg-white px-5 py-12">
+        <div className="flex w-full max-w-[460px] flex-col items-center gap-5 text-center">
+          <Logo />
+          <span className="grid size-20 place-items-center rounded-full bg-surface">
+            <ShoppingBag className="size-9" aria-hidden />
+          </span>
+          <b className="font-display text-2xl">Your cart is empty</b>
+          <p className="text-[15px] text-muted">Add a device to your cart before checking out.</p>
+          <Link href={routes.shop} className="inline-flex h-12 items-center rounded-full bg-ink px-6 text-sm font-semibold text-white">
+            Continue shopping
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-dvh bg-white lg:h-dvh lg:overflow-hidden lg:bg-[#ececef] lg:px-8 lg:py-8">
@@ -205,13 +288,13 @@ export function CheckoutPage() {
             {summaryOpen ? "Hide" : "Show"} order summary
             <ChevronDown className={cn("size-4 transition-transform", summaryOpen && "rotate-180")} aria-hidden />
           </span>
-          <b className="font-display text-lg">R [TOTAL]</b>
+          <b className="font-display text-lg">{formatZar(total)}</b>
         </button>
         <AnimatePresence initial={false}>
           {summaryOpen && (
             <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden">
               <div className="mx-auto max-w-[640px] px-5 pb-6">
-                <Summary />
+                {summary}
               </div>
             </motion.div>
           )}
@@ -221,11 +304,7 @@ export function CheckoutPage() {
       <div className="mx-auto grid max-w-[1180px] overflow-clip bg-white lg:h-full lg:grid-cols-[minmax(0,1fr)_minmax(380px,440px)] lg:grid-rows-1 lg:rounded-[32px] lg:shadow-[0_32px_64px_-32px_rgb(17_17_17/0.3)] lg:ring-1 lg:ring-black/5">
         {/* Left: form */}
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setPlaced(true);
-            window.scrollTo({ top: 0 });
-          }}
+          onSubmit={placeOrder}
           data-lenis-prevent
           className="flex flex-col gap-10 px-5 pb-14 pt-8 sm:px-10 lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain lg:px-14 lg:py-12 lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden"
         >
@@ -285,6 +364,14 @@ export function CheckoutPage() {
               </RadioRow>
             </div>
 
+            {delivery === "pickup" && (
+              <div className="grid gap-3 sm:grid-cols-2">
+                <FloatField label="First name" name="firstName" autoComplete="given-name" required />
+                <FloatField label="Last name" name="lastName" autoComplete="family-name" required />
+                <FloatField label="Phone" type="tel" name="phone" autoComplete="tel" className="sm:col-span-2" required />
+              </div>
+            )}
+
             {delivery === "ship" && (
               <div className="grid gap-3 sm:grid-cols-2">
                 <FloatSelect label="Country/Region" name="country" className="sm:col-span-2" defaultValue="ZA">
@@ -322,8 +409,8 @@ export function CheckoutPage() {
             <Section title="Shipping method">
               <div className="flex flex-col gap-3">
                 {[
-                  { label: "Standard delivery", note: "[X]–[Y] working days", price: "R [FEE]" },
-                  { label: "Express delivery", note: "Next working day", price: "R [FEE]" },
+                  { label: "Standard delivery", note: "Tracked courier delivery", price: formatZar(config.shipping.standard) },
+                  { label: "Express delivery", note: "Next working day", price: formatZar(config.shipping.express) },
                 ].map((opt, index) => (
                   <RadioRow
                     key={opt.label}
@@ -353,15 +440,7 @@ export function CheckoutPage() {
           >
             <div className="flex flex-col gap-3">
               <RadioRow name="payment" checked={payment === 0} onChange={() => setPayment(0)} title="Credit or debit card" right={<span className="text-xs font-semibold text-muted">VISA · MC</span>}>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="relative sm:col-span-2">
-                    <FloatField label="Card number" inputMode="numeric" autoComplete="cc-number" />
-                    <Lock className="pointer-events-none absolute right-3.5 top-[19px] size-4 text-muted" aria-hidden />
-                  </div>
-                  <FloatField label="Name on card" autoComplete="cc-name" className="sm:col-span-2" />
-                  <FloatField label="Expiration date (MM / YY)" autoComplete="cc-exp" />
-                  <FloatField label="Security code" inputMode="numeric" autoComplete="cc-csc" />
-                </div>
+                <p className="text-sm text-muted">No card details are collected on this page. Our team will contact you to complete card payment securely.</p>
               </RadioRow>
               <RadioRow name="payment" checked={payment === 1} onChange={() => setPayment(1)} title="Payflex" right={<span className="rounded bg-[#ffc933] px-1.5 py-0.5 text-[11px] font-bold">3×</span>}>
                 <p className="text-sm text-muted">Pay in 3 interest-free instalments. You&apos;ll be redirected to Payflex to complete your purchase.</p>
@@ -388,11 +467,17 @@ export function CheckoutPage() {
           </Section>
 
           <div className="flex flex-col gap-4">
+            {error ? (
+              <p role="alert" className="rounded-[10px] bg-[#fee2e2] px-4 py-3 text-sm font-semibold text-[#b91c1c]">
+                {error}
+              </p>
+            ) : null}
             <button
               type="submit"
-              className="flex h-[60px] items-center justify-center gap-2 rounded-[12px] bg-ink text-[17px] font-semibold text-white transition-colors hover:bg-[#333333]"
+              disabled={submitting || lines.length === 0}
+              className="flex h-[60px] items-center justify-center gap-2 rounded-[12px] bg-ink text-[17px] font-semibold text-white transition-colors hover:bg-[#333333] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Lock className="size-[18px]" aria-hidden /> Pay now
+              <Lock className="size-[18px]" aria-hidden /> {submitting ? "Placing order…" : `Place order · ${formatZar(total)}`}
             </button>
             <Link href={routes.cart} className="flex items-center gap-1 text-sm text-[#2347ff] hover:underline">
               ‹ Return to cart
@@ -409,9 +494,7 @@ export function CheckoutPage() {
 
         {/* Right: summary */}
         <aside aria-label="Order summary" data-lenis-prevent className="hidden border-l border-[#e4e4e7] bg-surface lg:block lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <div className="px-10 py-12">
-            <Summary />
-          </div>
+          <div className="px-10 py-12">{summary}</div>
         </aside>
       </div>
     </div>
@@ -422,7 +505,7 @@ export function CheckoutPage() {
 /*  Confirmation                                                        */
 /* ------------------------------------------------------------------ */
 
-function Confirmation() {
+function Confirmation({ order }: { order: OrderResult }) {
   return (
     <div className="grid min-h-dvh place-items-center bg-white px-5 py-12">
       <div className="flex w-full max-w-[560px] flex-col gap-6">
@@ -432,30 +515,30 @@ function Confirmation() {
             <Check className="size-7" strokeWidth={2.6} aria-hidden />
           </span>
           <span>
-            <span className="block text-sm text-muted">Order #VE-10483</span>
+            <span className="block text-sm text-muted">Order #{order.id}</span>
             <h1 className="font-display text-3xl font-bold leading-tight">Thank you!</h1>
           </span>
         </div>
 
         <div className="rounded-[14px] border border-[#d4d4d8] p-6">
-          <b className="font-display text-xl">Your order is confirmed</b>
+          <b className="font-display text-xl">We&apos;ve received your order</b>
           <p className="mt-2 text-[15px] leading-relaxed text-muted">
-            We&apos;ve emailed your receipt. You&apos;ll get a WhatsApp message as soon as your order is packed. Track it any time with your order number.
+            Keep your order number — together with your email address it lets you track the order any time. Our team will be in touch to confirm payment, and your order is packed once that is done.
           </p>
         </div>
 
         <div className="grid gap-4 rounded-[14px] border border-[#d4d4d8] p-6 text-sm sm:grid-cols-2">
           <div>
             <b className="block">Contact</b>
-            <span className="text-muted">you@example.com</span>
+            <span className="text-muted">{order.email}</span>
           </div>
           <div>
             <b className="block">Payment</b>
-            <span className="text-muted">Card · R [TOTAL]</span>
+            <span className="text-muted">{PAYMENT_LABEL[order.payment]} · {formatZar(order.total)}</span>
           </div>
           <div>
             <b className="block">Delivery</b>
-            <span className="text-muted">Standard · [X]–[Y] working days</span>
+            <span className="text-muted">{order.delivery === "pickup" ? "Collect in store" : order.shippingMethod === "express" ? "Express delivery" : "Standard delivery"}</span>
           </div>
           <div>
             <b className="block">Need help?</b>

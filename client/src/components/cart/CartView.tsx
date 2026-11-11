@@ -2,21 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { CreditCard, SealCheck, ShieldCheck } from "@phosphor-icons/react";
 
-import { demoCart, type CartLine } from "@/data/cart";
+import { useCart } from "@/context/CartContext";
 import { routes } from "@/data/site";
+import { formatZar } from "@/lib/money";
 import { Breadcrumbs } from "@/components/ui/PageHero";
 
 /** Cart review page. The payment flow lives on /checkout. */
 export function CartView() {
-  const [lines, setLines] = useState<CartLine[]>(demoCart);
-  const count = lines.reduce((sum, l) => sum + l.qty, 0);
-  const setQty = (id: string, qty: number) =>
-    setLines((prev) => prev.map((l) => (l.product.id === id ? { ...l, qty: Math.min(9, Math.max(1, qty)) } : l)));
-  const remove = (id: string) => setLines((prev) => prev.filter((l) => l.product.id !== id));
+  const { lines, count, subtotal, ready, setQty, remove } = useCart();
 
   return (
     <>
@@ -27,7 +23,7 @@ export function CartView() {
         </h1>
       </div>
 
-      {lines.length === 0 ? (
+      {!ready ? null : lines.length === 0 ? (
         <div className="flex flex-col items-center gap-4 rounded-panel bg-white px-6 py-20 text-center ring-1 ring-line">
           <span className="grid size-20 place-items-center rounded-full bg-surface">
             <ShoppingBag className="size-9" aria-hidden />
@@ -63,7 +59,7 @@ export function CartView() {
                     <Plus className="size-4" aria-hidden />
                   </button>
                 </div>
-                <b className="w-28 text-right font-display text-xl">{product.price}</b>
+                <b className="w-28 text-right font-display text-xl">{formatZar(product.priceValue * qty)}</b>
                 <button
                   type="button"
                   aria-label={`Remove ${product.name}`}
@@ -81,7 +77,7 @@ export function CartView() {
             <dl className="flex flex-col gap-3 text-[15px]">
               <div className="flex justify-between">
                 <dt className="text-muted">Subtotal ({count} items)</dt>
-                <dd className="font-semibold">R [SUBTOTAL]</dd>
+                <dd className="font-semibold">{formatZar(subtotal)}</dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-muted">Shipping</dt>
@@ -89,7 +85,7 @@ export function CartView() {
               </div>
               <div className="flex items-baseline justify-between border-t border-line pt-4">
                 <dt className="font-semibold">Estimated total</dt>
-                <dd className="font-display text-2xl font-bold">R [TOTAL]</dd>
+                <dd className="font-display text-2xl font-bold">{formatZar(subtotal)}</dd>
               </div>
             </dl>
             <Link

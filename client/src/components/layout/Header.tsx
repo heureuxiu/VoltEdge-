@@ -9,7 +9,7 @@ import { ArrowUpRight, Heart, Menu, Search, ShoppingBag, User, X } from "lucide-
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
-import { demoCart, type CartLine } from "@/data/cart";
+import { useCart } from "@/context/CartContext";
 import { mainNav, routes } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -20,17 +20,16 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [cartLines, setCartLines] = useState<CartLine[]>(demoCart);
-  const cartCount = cartLines.reduce((sum, l) => sum + l.qty, 0);
+  const cart = useCart();
+  const { isOpen: cartOpen, count: cartCount, openCart, closeCart } = cart;
   const pathname = usePathname();
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   // Close the drawer and the mobile menu whenever the route changes.
   useEffect(() => {
-    setCartOpen(false);
+    closeCart();
     setMenuOpen(false);
-  }, [pathname]);
+  }, [pathname, closeCart]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -110,7 +109,7 @@ export function Header() {
               aria-label={`Open cart, ${cartCount} items`}
               aria-haspopup="dialog"
               aria-expanded={cartOpen}
-              onClick={() => setCartOpen(true)}
+              onClick={openCart}
               className={cn(iconButton, "relative")}
             >
               <ShoppingBag className="size-5" aria-hidden />
@@ -183,12 +182,11 @@ export function Header() {
       </Container>
       <CartDrawer
         open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        lines={cartLines}
-        onQty={(id, qty) =>
-          setCartLines((prev) => prev.map((l) => (l.product.id === id ? { ...l, qty: Math.min(9, Math.max(1, qty)) } : l)))
-        }
-        onRemove={(id) => setCartLines((prev) => prev.filter((l) => l.product.id !== id))}
+        onClose={closeCart}
+        lines={cart.lines}
+        subtotal={cart.subtotal}
+        onQty={cart.setQty}
+        onRemove={cart.remove}
       />
     </header>
   );

@@ -10,17 +10,19 @@ import { CreditCard } from "@phosphor-icons/react";
 
 import { routes } from "@/data/site";
 import type { CartLine } from "@/data/cart";
+import { formatZar } from "@/lib/money";
 
 interface CartDrawerProps {
   open: boolean;
   onClose: () => void;
   lines: CartLine[];
+  subtotal: number;
   onQty: (id: string, qty: number) => void;
   onRemove: (id: string) => void;
 }
 
 /** Slide-in mini cart. "View full cart" goes to the cart page. */
-export function CartDrawer({ open, onClose, lines, onQty, onRemove }: CartDrawerProps) {
+export function CartDrawer({ open, onClose, lines, subtotal, onQty, onRemove }: CartDrawerProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -145,7 +147,7 @@ export function CartDrawer({ open, onClose, lines, onQty, onRemove }: CartDrawer
                               <Plus className="size-3.5" aria-hidden />
                             </button>
                           </div>
-                          <b className="font-display text-lg">{product.price}</b>
+                          <b className="font-display text-lg">{formatZar(product.priceValue * qty)}</b>
                         </div>
                       </div>
                     </li>
@@ -161,7 +163,7 @@ export function CartDrawer({ open, onClose, lines, onQty, onRemove }: CartDrawer
                   </div>
                   <div className="flex items-baseline justify-between">
                     <span className="text-muted">Subtotal</span>
-                    <b className="font-display text-2xl">R [TOTAL]</b>
+                    <b className="font-display text-2xl">{formatZar(subtotal)}</b>
                   </div>
                   <p className="-mt-2 text-xs text-muted">Delivery and discounts are calculated at checkout.</p>
                   <Link
